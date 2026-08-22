@@ -1,0 +1,208 @@
+@page
+@model CartModel
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART
+            </span>
+
+            <h1>Your Shopping Cart</h1>
+
+            <p>
+                Review your items before checkout.
+            </p>
+
+        </div>
+
+
+        @if (Model.CartItems.Count == 0)
+        {
+            <div class="empty-cart">
+
+                <h2>Your cart is empty</h2>
+
+                <p>
+                    Add some fresh groceries to get started.
+                </p>
+
+                <a asp-page="/Products"
+                   class="primary-button">
+
+                    Start Shopping
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="cart-layout">
+
+
+                <!-- CART ITEMS -->
+
+                <div class="cart-items">
+
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <div class="cart-item">
+
+                            <div class="cart-item-image">
+
+                                <img src="@item.Image"
+                                     alt="@item.ProductName" />
+
+                            </div>
+
+
+                            <div class="cart-item-info">
+
+                                <h3>
+                                    @item.ProductName
+                                </h3>
+
+                                <p>
+                                    ₹@item.Price each
+                                </p>
+
+                                <strong>
+                                    ₹@item.Total
+                                </strong>
+
+                            </div>
+
+
+                            <div class="quantity">
+
+                                <form method="post"
+                                      asp-page-handler="Decrease">
+
+                                    <input type="hidden"
+                                           name="productId"
+                                           value="@item.ProductId" />
+
+                                    <button type="submit">
+                                        −
+                                    </button>
+
+                                </form>
+
+
+                                <span>
+                                    @item.Quantity
+                                </span>
+
+
+                                <form method="post"
+                                      asp-page-handler="Increase">
+
+                                    <input type="hidden"
+                                           name="productId"
+                                           value="@item.ProductId" />
+
+                                    <button type="submit">
+                                        +
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+
+                            <form method="post"
+                                  asp-page-handler="Remove">
+
+                                <input type="hidden"
+                                       name="productId"
+                                       value="@item.ProductId" />
+
+                                <button type="submit"
+                                        class="remove-button">
+
+                                    Remove
+
+                                </button>
+
+                            </form>
+
+                        </div>
+                    }
+
+                </div>
+
+
+                <!-- ORDER SUMMARY -->
+
+                <div class="cart-summary">
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹@Model.Subtotal
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <strong>
+                            ₹@Model.DeliveryCharge
+                        </strong>
+
+                    </div>
+
+
+                    <hr />
+
+
+                    <div class="summary-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ₹@Model.Total
+                        </strong>
+
+                    </div>
+
+
+                    <a href="#"
+                       class="checkout-button">
+
+                        Proceed to Checkout
+
+                    </a>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</section>

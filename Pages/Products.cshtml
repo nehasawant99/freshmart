@@ -1,0 +1,84 @@
+@page
+@model ProductsModel
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART STORE
+            </span>
+
+            <h1>All Products</h1>
+
+            <p>
+                Fresh groceries and everyday essentials.
+            </p>
+
+        </div>
+
+
+        <div class="product-grid">
+
+            @foreach (var product in Model.Products)
+            {
+                <article class="product-card">
+
+                    <div class="product-image">
+
+                        <img src="@product.ImageUrl"
+                             alt="@product.Name" />
+
+                    </div>
+
+
+                    <div class="product-info">
+
+                        <span class="product-category">
+                            @product.Category?.Name
+                        </span>
+
+                        <h3>
+                            @product.Name
+                        </h3>
+
+
+                        <div class="product-bottom">
+
+                            <strong>
+                                ₹@product.Price
+                            </strong>
+
+
+                            <form method="post"
+                                  asp-page-handler="AddToCart">
+
+                                <input type="hidden"
+                                       name="productId"
+                                       value="@product.Id" />
+
+                                <button type="submit"
+                                        class="cart-button">
+                                    + Add
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+
+        </div>
+
+    </div>
+
+</section>

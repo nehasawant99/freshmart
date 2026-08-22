@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - FreshMart</title>
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+
+        <div class="container navbar-content">
+
+            <a class="brand" asp-page="/Index">
+                FreshMart
+            </a>
+
+            <nav class="nav-links">
+
+    <a asp-page="/Index">Home</a>
+
+    <a asp-page="/Products">Products</a>
+
+    <a asp-page="/Categories">Categories</a>
+
+    <a asp-page="/Cart">Cart</a>
+
+    <a asp-page="/Login">Login</a>
+
+</nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- Main Page Content -->
+
+    <main>
+        @RenderBody()
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <p>
+                © 2026 FreshMart. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

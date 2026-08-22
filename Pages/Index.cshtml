@@ -1,0 +1,493 @@
+﻿@page
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- =========================
+     HERO SECTION
+     ========================= -->
+
+<section class="hero">
+
+    <div class="container hero-content">
+
+        <div class="hero-text">
+
+            <span class="hero-label">
+                FRESH • QUALITY • DELIVERED
+            </span>
+
+            <h1>
+                Fresh groceries<br />
+                <span>at your doorstep.</span>
+            </h1>
+
+            <p>
+                Shop fresh fruits, vegetables, dairy products,
+                snacks and everyday essentials at FreshMart.
+            </p>
+
+            <div class="hero-actions">
+
+                <a asp-page="/Products"
+                   class="primary-button">
+                    Shop Now
+                </a>
+
+                <a asp-page="/Categories"
+                   class="secondary-button">
+                    Explore Categories
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-image">
+
+            <img src="~/images/hero.png"
+                 alt="FreshMart grocery shopping" />
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CATEGORIES
+     ========================= -->
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    SHOP BY CATEGORY
+                </span>
+
+                <h2>
+                    What are you looking for?
+                </h2>
+
+            </div>
+
+            <a asp-page="/Categories"
+               class="view-link">
+                View all →
+            </a>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            <!-- VEGETABLES -->
+
+            <a asp-page="/Products"
+               class="category-card">
+
+                <div class="category-image">
+
+                    <img src="~/images/vegetables.png"
+                         alt="Vegetables" />
+
+                </div>
+
+                <div class="category-content">
+
+                    <h3>
+                        Vegetables
+                    </h3>
+
+                    <p>
+                        Fresh & healthy
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <!-- FRUITS -->
+
+            <a asp-page="/Products"
+               class="category-card">
+
+                <div class="category-image">
+
+                    <img src="~/images/fruits.png"
+                         alt="Fruits" />
+
+                </div>
+
+                <div class="category-content">
+
+                    <h3>
+                        Fruits
+                    </h3>
+
+                    <p>
+                        Fresh & delicious
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <!-- DAIRY -->
+
+            <a asp-page="/Products"
+               class="category-card">
+
+                <div class="category-image">
+
+                    <img src="~/images/dairy.png"
+                         alt="Dairy Products" />
+
+                </div>
+
+                <div class="category-content">
+
+                    <h3>
+                        Dairy
+                    </h3>
+
+                    <p>
+                        Daily essentials
+                    </p>
+
+                </div>
+
+            </a>
+
+
+            <!-- SNACKS -->
+
+            <a asp-page="/Products"
+               class="category-card">
+
+                <div class="category-image">
+
+                    <img src="~/images/snacks.png"
+                         alt="Snacks" />
+
+                </div>
+
+                <div class="category-content">
+
+                    <h3>
+                        Snacks
+                    </h3>
+
+                    <p>
+                        Tasty treats
+                    </p>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     POPULAR PRODUCTS
+     ========================= -->
+
+<section class="section products-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    POPULAR PRODUCTS
+                </span>
+
+                <h2>
+                    Fresh picks for you
+                </h2>
+
+            </div>
+
+            <a asp-page="/Products"
+               class="view-link">
+                View all →
+            </a>
+
+        </div>
+
+
+        <!-- PRODUCTS FROM SQL SERVER -->
+
+        <div class="product-grid">
+
+            @if (Model.Products.Count == 0)
+            {
+                <div class="empty-products">
+
+                    <h3>
+                        No products available
+                    </h3>
+
+                    <p>
+                        Please check back later.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                @foreach (var product in Model.Products)
+                {
+                    <article class="product-card">
+
+
+                        <!-- PRODUCT IMAGE -->
+
+                        <div class="product-image">
+
+                            <img src="@product.ImageUrl"
+                                 alt="@product.Name" />
+
+                        </div>
+
+
+                        <!-- PRODUCT INFORMATION -->
+
+                        <div class="product-info">
+
+                          <span class="product-category">
+                              @(product.Category?.Name ?? "Uncategorized")
+                          </span>
+
+
+                            <h3>
+
+                                @product.Name
+
+                            </h3>
+
+
+                            <p class="product-description">
+
+                                @product.Description
+
+                            </p>
+
+
+                            <!-- PRICE + ADD -->
+
+                            <div class="product-bottom">
+
+                                <strong>
+
+                                    ₹@product.Price
+
+                                </strong>
+
+
+                                <!-- REAL CART FORM -->
+
+                                <form method="post"
+                                      asp-page-handler="AddToCart">
+
+                                    <input type="hidden"
+                                           name="productId"
+                                           value="@product.Id" />
+
+
+                                    <button type="submit"
+                                            class="cart-button">
+
+                                        + Add
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+                }
+            }
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     WHY FRESHMART
+     ========================= -->
+
+<section class="benefits-section">
+
+    <div class="container">
+
+        <div class="section-heading centered">
+
+            <div>
+
+                <span class="section-label">
+                    WHY FRESHMART
+                </span>
+
+                <h2>
+                    Shopping made simple
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="benefits-grid">
+
+
+            <!-- FAST DELIVERY -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    🚚
+                </div>
+
+                <h3>
+                    Fast Delivery
+                </h3>
+
+                <p>
+                    Get your groceries delivered
+                    quickly to your doorstep.
+                </p>
+
+            </div>
+
+
+            <!-- FRESH PRODUCTS -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    🌱
+                </div>
+
+                <h3>
+                    Fresh Products
+                </h3>
+
+                <p>
+                    Carefully selected groceries
+                    for your everyday needs.
+                </p>
+
+            </div>
+
+
+            <!-- SECURE SHOPPING -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    🔒
+                </div>
+
+                <h3>
+                    Secure Shopping
+                </h3>
+
+                <p>
+                    Your account and shopping
+                    information stay protected.
+                </p>
+
+            </div>
+
+
+            <!-- EASY PAYMENTS -->
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    💳
+                </div>
+
+                <h3>
+                    Easy Payments
+                </h3>
+
+                <p>
+                    Simple and convenient checkout
+                    for your orders.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA SECTION
+     ========================= -->
+
+<section class="cta-section">
+
+    <div class="container">
+
+        <div class="cta-content">
+
+            <div>
+
+                <span class="cta-label">
+                    READY TO SHOP?
+                </span>
+
+                <h2>
+                    Fresh groceries are just a click away.
+                </h2>
+
+                <p>
+                    Explore our products and start
+                    your FreshMart shopping experience.
+                </p>
+
+            </div>
+
+
+            <a asp-page="/Products"
+               class="cta-button">
+
+                Start Shopping →
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
