@@ -1,0 +1,137 @@
+@page
+@model GroceryShopping.Pages.Admin.Products.IndexModel
+
+@{
+    ViewData["Title"] = "Manage Products";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <div>
+                <span class="section-label">
+                    FRESHMART ADMIN
+                </span>
+
+                <h1>Manage Products</h1>
+
+                <p>
+                    Add, edit and manage FreshMart products.
+                </p>
+            </div>
+
+            <a asp-page="Create" class="primary-button">
+                + Add Product
+            </a>
+
+        </div>
+
+
+        <div class="admin-table-container">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Product</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <div class="admin-product">
+
+                                    <img src="@product.ImageUrl"
+                                         alt="@product.Name" />
+
+                                    <div>
+                                        <strong>
+                                            @product.Name
+                                        </strong>
+
+                                        <small>
+                                            ID: @product.Id
+                                        </small>
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+                            <td>
+                                @product.Category?.Name
+                            </td>
+
+                            <td>
+                                ₹@product.Price
+                            </td>
+
+                            <td>
+                                @product.StockQuantity
+                            </td>
+
+                            <td>
+
+                                @if (product.IsAvailable)
+                                {
+                                    <span class="status available">
+                                        Available
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status unavailable">
+                                        Unavailable
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td>
+
+                                <div class="admin-actions">
+
+                                    <a asp-page="Edit"
+                                       asp-route-id="@product.Id"
+                                       class="edit-button">
+                                        Edit
+                                    </a>
+
+                                    <a asp-page="Delete"
+                                       asp-route-id="@product.Id"
+                                       class="delete-button">
+                                        Delete
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
