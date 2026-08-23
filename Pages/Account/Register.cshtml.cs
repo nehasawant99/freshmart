@@ -19,13 +19,11 @@ public class RegisterModel : PageModel
     [EmailAddress(ErrorMessage = "Enter a valid email address.")]
     public string Email { get; set; } = string.Empty;
 
-
     [BindProperty]
     [Required(ErrorMessage = "Password is required.")]
     [DataType(DataType.Password)]
     [MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
     public string Password { get; set; } = string.Empty;
-
 
     [BindProperty]
     [Required(ErrorMessage = "Please confirm your password.")]
@@ -36,11 +34,9 @@ public class RegisterModel : PageModel
     )]
     public string ConfirmPassword { get; set; } = string.Empty;
 
-
     public void OnGet()
     {
     }
-
 
     public async Task<IActionResult> OnPostAsync()
     {
@@ -49,7 +45,6 @@ public class RegisterModel : PageModel
         {
             return Page();
         }
-
 
         // Check whether email already exists
         var existingUser =
@@ -65,7 +60,6 @@ public class RegisterModel : PageModel
             return Page();
         }
 
-
         // Create Identity user
         var user = new IdentityUser
         {
@@ -73,11 +67,9 @@ public class RegisterModel : PageModel
             Email = Email
         };
 
-
         // Identity securely hashes the password
         var result =
             await _userManager.CreateAsync(user, Password);
-
 
         // Handle Identity validation errors
         if (!result.Succeeded)
@@ -93,6 +85,28 @@ public class RegisterModel : PageModel
             return Page();
         }
 
+        // Assign Customer role
+        var roleResult =
+            await _userManager.AddToRoleAsync(
+                user,
+                "Customer"
+            );
+
+        // If role assignment fails, remove the user
+        if (!roleResult.Succeeded)
+        {
+            await _userManager.DeleteAsync(user);
+
+            foreach (var error in roleResult.Errors)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    error.Description
+                );
+            }
+
+            return Page();
+        }
 
         // Registration successful
         return RedirectToPage("/Account/Login");

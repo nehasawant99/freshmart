@@ -63,6 +63,18 @@ builder.Services.AddScoped<CartService>();
 
 var app = builder.Build();
 
+// =====================================
+// SEED IDENTITY ROLES
+// =====================================
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager =
+        scope.ServiceProvider
+            .GetRequiredService<RoleManager<IdentityRole>>();
+
+    await IdentitySeeder.SeedRolesAsync(roleManager);
+}
 
 // =====================================
 // HTTP REQUEST PIPELINE
