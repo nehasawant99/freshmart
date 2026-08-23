@@ -56,7 +56,9 @@
                             </strong>
 
 
-                            <form method="post"
+                            @if (product.IsAvailable && product.StockQuantity > 0)
+                            {
+                                <form method="post"
                                   asp-page-handler="AddToCart">
 
                                 <input type="hidden"
@@ -64,11 +66,20 @@
                                        value="@product.Id" />
 
                                 <button type="submit"
-                                        class="cart-button">
-                                    + Add
-                                </button>
+                                       class="cart-button">
+                                         + Add
+                                 </button>
 
-                            </form>
+                           </form>
+}
+else
+{
+                         <button type="button"
+                              class="cart-button disabled-button"
+                              disabled>
+                              Unavailable
+                        </button>
+}
 
                         </div>
 

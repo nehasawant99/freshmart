@@ -31,18 +31,22 @@ public class ProductsModel : PageModel
     }
 
     public async Task<IActionResult> OnPostAddToCartAsync(int productId)
+{
+    var product = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == productId);
+
+    if (product == null)
     {
-        var product = await _context.Products
-            .Include(p => p.Category)
-            .FirstOrDefaultAsync(p => p.Id == productId);
-
-        if (product == null)
-        {
-            return NotFound();
-        }
-
-        _cartService.AddToCart(product);
-
-        return RedirectToPage("/Cart");
+        return NotFound();
     }
+
+    if (!product.IsAvailable || product.StockQuantity <= 0)
+    {
+        return RedirectToPage();
+    }
+
+    _cartService.AddToCart(product);
+
+    return RedirectToPage("/Cart");
+}
 }

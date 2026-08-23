@@ -1,0 +1,133 @@
+@page
+@model GroceryShopping.Pages.Account.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="auth-card">
+
+            <span class="section-label">
+                FRESHMART
+            </span>
+
+            <h1>Welcome Back</h1>
+
+            <p>
+                Login to your FreshMart account.
+            </p>
+
+
+            <!-- LOGIN ERROR -->
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="login-error">
+                    @Model.ErrorMessage
+                </div>
+            }
+
+
+            <form method="post">
+
+                <!-- VALIDATION SUMMARY -->
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger">
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label asp-for="Email">
+                        Email
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           type="email"
+                           autocomplete="email"
+                           placeholder="Enter your email" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label asp-for="Password">
+                        Password
+                    </label>
+
+                    <input asp-for="Password"
+                           class="form-control"
+                           type="password"
+                           autocomplete="current-password"
+                           placeholder="Enter your password" />
+
+                    <span asp-validation-for="Password"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+
+                <!-- REMEMBER ME -->
+
+                <div class="remember-me">
+
+                    <input asp-for="RememberMe"
+                           type="checkbox" />
+
+                    <label asp-for="RememberMe">
+                        Remember me
+                    </label>
+
+                </div>
+
+
+                <!-- LOGIN BUTTON -->
+
+                <button type="submit"
+                        class="primary-button">
+
+                    Login
+
+                </button>
+
+            </form>
+
+
+            <p class="auth-link">
+
+                Don't have an account?
+
+                <a asp-page="/Account/Register">
+                    Create Account
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

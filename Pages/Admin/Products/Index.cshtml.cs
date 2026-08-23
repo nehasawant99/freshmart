@@ -1,5 +1,6 @@
 using GroceryShopping.Data;
 using GroceryShopping.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,5 +22,22 @@ public class IndexModel : PageModel
         Products = await _context.Products
             .Include(p => p.Category)
             .ToListAsync();
+    }
+
+    public async Task<IActionResult> OnPostToggleAvailabilityAsync(int id)
+    {
+        var product = await _context.Products
+            .FirstOrDefaultAsync(p => p.Id == id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        product.IsAvailable = !product.IsAvailable;
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage();
     }
 }

@@ -88,19 +88,48 @@
 
                             <td>
 
-                                @if (product.IsAvailable)
-                                {
-                                    <span class="status available">
-                                        Available
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="status unavailable">
-                                        Unavailable
-                                    </span>
-                                }
+                               @if (product.IsAvailable)
+{
+    <span class="status available">
+        Available
+    </span>
 
+    <form method="post"
+          asp-page-handler="ToggleAvailability"
+          class="status-form">
+
+        <input type="hidden"
+               name="id"
+               value="@product.Id" />
+
+        <button type="submit"
+                class="status-button unavailable-button">
+            Mark Unavailable
+        </button>
+
+    </form>
+}
+else
+{
+    <span class="status unavailable">
+        Unavailable
+    </span>
+
+    <form method="post"
+          asp-page-handler="ToggleAvailability"
+          class="status-form">
+
+        <input type="hidden"
+               name="id"
+               value="@product.Id" />
+
+        <button type="submit"
+                class="status-button available-button">
+            Mark Available
+        </button>
+
+    </form>
+}
                             </td>
 
                             <td>
