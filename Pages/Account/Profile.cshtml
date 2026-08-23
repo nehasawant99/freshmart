@@ -1,0 +1,79 @@
+@page
+@model GroceryShopping.Pages.Account.ProfileModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="profile-page">
+
+            <span class="section-label">
+                FRESHMART ACCOUNT
+            </span>
+
+            <h1>My Profile</h1>
+
+            <p class="profile-subtitle">
+                Manage your FreshMart account information.
+            </p>
+
+
+            <div class="profile-card">
+
+               <div class="profile-avatar">
+                    @(string.IsNullOrWhiteSpace(Model.Email)
+                       ? "U"
+                       : Model.Email.Trim().Substring(0, 1).ToUpper())
+               </div>
+
+                <div class="profile-info">
+
+                    <div class="profile-row">
+                        <span class="profile-label">
+                            Email
+                        </span>
+
+                        <span class="profile-value">
+                            @Model.Email
+                        </span>
+                    </div>
+
+
+                    <div class="profile-row">
+                        <span class="profile-label">
+                            Account Type
+                        </span>
+
+                        <span class="profile-value">
+                            @Model.Role
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="profile-actions">
+
+                    <form method="post"
+                          asp-page="/Account/Logout">
+
+                        <button type="submit"
+                                class="logout-button profile-logout">
+                            Logout
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

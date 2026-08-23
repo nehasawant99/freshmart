@@ -1,0 +1,31 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <a asp-page="/Account/Profile">
+        Profile
+    </a>
+
+    <form method="post"
+          asp-page="/Account/Logout"
+          class="logout-form">
+
+        <button type="submit"
+                class="logout-button">
+            Logout
+        </button>
+
+    </form>
+}
+else
+{
+    <a asp-page="/Account/Login">
+        Login
+    </a>
+
+    <a asp-page="/Account/Register">
+        Register
+    </a>
+}
