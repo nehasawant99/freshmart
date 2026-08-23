@@ -22,31 +22,44 @@ public class ProductsModel : PageModel
 
     public List<Product> Products { get; set; } = new();
 
-    public async Task OnGetAsync()
+    public int? SelectedCategoryId { get; set; }
+
+    public async Task OnGetAsync(int? categoryId)
     {
-        Products = await _context.Products
+        SelectedCategoryId = categoryId;
+
+        var query = _context.Products
             .Include(p => p.Category)
             .Where(p => p.IsAvailable)
-            .ToListAsync();
+            .AsQueryable();
+
+        // Filter products by category
+        if (categoryId.HasValue)
+        {
+            query = query.Where(p =>
+                p.CategoryId == categoryId.Value);
+        }
+
+        Products = await query.ToListAsync();
     }
 
     public async Task<IActionResult> OnPostAddToCartAsync(int productId)
-{
-    var product = await _context.Products
-        .FirstOrDefaultAsync(p => p.Id == productId);
-
-    if (product == null)
     {
-        return NotFound();
+        var product = await _context.Products
+            .FirstOrDefaultAsync(p => p.Id == productId);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        if (!product.IsAvailable || product.StockQuantity <= 0)
+        {
+            return RedirectToPage();
+        }
+
+        _cartService.AddToCart(product);
+
+        return RedirectToPage("/Cart");
     }
-
-    if (!product.IsAvailable || product.StockQuantity <= 0)
-    {
-        return RedirectToPage();
-    }
-
-    _cartService.AddToCart(product);
-
-    return RedirectToPage("/Cart");
-}
 }
