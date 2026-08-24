@@ -90,110 +90,35 @@
 
         <div class="category-grid">
 
-            <!-- VEGETABLES -->
+    @foreach (var category in Model.Categories)
+    {
+        <a asp-page="/Products"
+           asp-route-categoryId="@category.Id"
+           class="category-card">
 
-            <a asp-page="/Products"
-               class="category-card">
+            <div class="category-image">
 
-                <div class="category-image">
+                <img src="~/images/@(category.Name.ToLower()).png"
+                     alt="@category.Name" />
 
-                    <img src="~/images/vegetables.png"
-                         alt="Vegetables" />
+            </div>
 
-                </div>
+            <div class="category-content">
 
-                <div class="category-content">
+                <h3>
+                    @category.Name
+                </h3>
 
-                    <h3>
-                        Vegetables
-                    </h3>
+                <p>
+                    @category.Description
+                </p>
 
-                    <p>
-                        Fresh & healthy
-                    </p>
+            </div>
 
-                </div>
+        </a>
+    }
 
-            </a>
-
-
-            <!-- FRUITS -->
-
-            <a asp-page="/Products"
-               class="category-card">
-
-                <div class="category-image">
-
-                    <img src="~/images/fruits.png"
-                         alt="Fruits" />
-
-                </div>
-
-                <div class="category-content">
-
-                    <h3>
-                        Fruits
-                    </h3>
-
-                    <p>
-                        Fresh & delicious
-                    </p>
-
-                </div>
-
-            </a>
-
-
-            <!-- DAIRY -->
-
-            <a asp-page="/Products"
-               class="category-card">
-
-                <div class="category-image">
-
-                    <img src="~/images/dairy.png"
-                         alt="Dairy Products" />
-
-                </div>
-
-                <div class="category-content">
-
-                    <h3>
-                        Dairy
-                    </h3>
-
-                    <p>
-                        Daily essentials
-                    </p>
-
-                </div>
-
-            </a>
-
-
-            <!-- SNACKS -->
-
-            <a asp-page="/Products"
-               class="category-card">
-
-                <div class="category-image">
-
-                    <img src="~/images/snacks.png"
-                         alt="Snacks" />
-
-                </div>
-
-                <div class="category-content">
-
-                    <h3>
-                        Snacks
-                    </h3>
-
-                    <p>
-                        Tasty treats
-                    </p>
-
-                </div>
+</div>
 
             </a>
 

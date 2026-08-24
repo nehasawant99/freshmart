@@ -1,10 +1,12 @@
 using GroceryShopping.Models;
 using GroceryShopping.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace GroceryShopping.Pages;
 
+[Authorize]
 public class CartModel : PageModel
 {
     private readonly CartService _cartService;
@@ -24,12 +26,10 @@ public class CartModel : PageModel
 
     public int ItemCount { get; set; }
 
-
     public void OnGet()
     {
         LoadCart();
     }
-
 
     public IActionResult OnPostIncrease(int productId)
     {
@@ -38,14 +38,12 @@ public class CartModel : PageModel
         return RedirectToPage();
     }
 
-
     public IActionResult OnPostDecrease(int productId)
     {
         _cartService.DecreaseQuantity(productId);
 
         return RedirectToPage();
     }
-
 
     public IActionResult OnPostRemove(int productId)
     {
@@ -54,14 +52,12 @@ public class CartModel : PageModel
         return RedirectToPage();
     }
 
-
     public IActionResult OnPostClear()
     {
         _cartService.ClearCart();
 
         return RedirectToPage();
     }
-
 
     private void LoadCart()
     {
@@ -71,8 +67,8 @@ public class CartModel : PageModel
 
         Subtotal = _cartService.GetSubtotal();
 
-        // Delivery is free for orders ₹500 or more.
-        // Orders below ₹500 have ₹40 delivery charge.
+        // Free delivery for orders ₹500 or more.
+        // ₹40 delivery charge for orders below ₹500.
 
         if (Subtotal == 0 || Subtotal >= 500)
         {

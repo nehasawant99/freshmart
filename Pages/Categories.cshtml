@@ -22,9 +22,7 @@
             </p>
 
         </div>
-
-
-       <div class="category-grid">
+        <div class="category-grid">
 
     @foreach (var category in Model.Categories)
     {
@@ -32,21 +30,30 @@
            asp-route-categoryId="@category.Id"
            class="category-card">
 
-            <div class="category-icon">
-                🛒
+            <div class="category-image">
+
+                <img src="~/images/@(category.Name.ToLower()).png"
+                     alt="@category.Name" />
+
             </div>
 
-            <h3>
-                @category.Name
-            </h3>
+            <div class="category-content">
 
-            <p>
-                @category.Description
-            </p>
+                <h3>
+                    @category.Name
+                </h3>
+
+                <p>
+                    @category.Description
+                </p>
+
+            </div>
 
         </a>
     }
 
 </div>
+
+       
     </div>
 </section>

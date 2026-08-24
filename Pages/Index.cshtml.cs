@@ -21,19 +21,24 @@ public class IndexModel : PageModel
     }
 
     public List<Product> Products { get; set; } = new();
+    public List<Category> Categories { get; set; } = new();
 
     public int CartItemCount { get; set; }
 
     public async Task OnGetAsync()
-    {
-        Products = await _context.Products
-            .Include(p => p.Category)
-            .Where(p => p.IsAvailable)
-            .Take(4)
-            .ToListAsync();
+{
+    Categories = await _context.Categories
+        .OrderBy(c => c.Name)
+        .ToListAsync();
 
-        CartItemCount = _cartService.GetItemCount();
-    }
+    Products = await _context.Products
+        .Include(p => p.Category)
+        .Where(p => p.IsAvailable)
+        .Take(4)
+        .ToListAsync();
+
+    CartItemCount = _cartService.GetItemCount();
+}
 
     public async Task<IActionResult> OnPostAddToCartAsync(int productId)
     {

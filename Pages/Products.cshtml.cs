@@ -43,23 +43,37 @@ public class ProductsModel : PageModel
         Products = await query.ToListAsync();
     }
 
+    // Login required to add products to cart
     public async Task<IActionResult> OnPostAddToCartAsync(int productId)
+{
+    if (User.Identity == null || !User.Identity.IsAuthenticated)
     {
-        var product = await _context.Products
-            .FirstOrDefaultAsync(p => p.Id == productId);
-
-        if (product == null)
-        {
-            return NotFound();
-        }
-
-        if (!product.IsAvailable || product.StockQuantity <= 0)
-        {
-            return RedirectToPage();
-        }
-
-        _cartService.AddToCart(product);
-
-        return RedirectToPage("/Cart");
+        return RedirectToPage(
+            "/Account/Login",
+            new
+            {
+                returnUrl = Url.Page(
+                    "/Products",
+                    new { categoryId = SelectedCategoryId }
+                )
+            });
     }
+
+    var product = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == productId);
+
+    if (product == null)
+    {
+        return NotFound();
+    }
+
+    if (!product.IsAvailable || product.StockQuantity <= 0)
+    {
+        return RedirectToPage();
+    }
+
+    _cartService.AddToCart(product);
+
+    return RedirectToPage("/Cart");
+}
 }
