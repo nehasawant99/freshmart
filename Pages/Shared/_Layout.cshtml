@@ -26,29 +26,65 @@
 
         <div class="container navbar-content">
 
-            <a class="brand"
-               asp-page="/Index">
-                FreshMart
-            </a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="brand"
+                   asp-page="/Admin/Index">
+                    FreshMart Admin
+                </a>
+            }
+            else
+            {
+                <a class="brand"
+                   asp-page="/Index">
+                    FreshMart
+                </a>
+            }
 
 
             <nav class="nav-links">
 
-                <a asp-page="/Index">
-                    Home
-                </a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <!-- ADMIN NAVIGATION -->
 
-                <a asp-page="/Products">
-                    Products
-                </a>
+                    <a asp-page="/Admin/Index">
+                        Dashboard
+                    </a>
 
-                <a asp-page="/Categories">
-                    Categories
-                </a>
+                    <a asp-page="/Admin/Products/Index">
+                        Products
+                    </a>
 
-                <a asp-page="/Cart">
-                    Cart
-                </a>
+                    <a asp-page="/Admin/Orders/Index">
+                        Orders
+                    </a>
+
+                    <a asp-page="/Admin/Categories/Index">
+                        Categories
+                    </a>
+                }
+                else
+                {
+                    <!-- CUSTOMER NAVIGATION -->
+
+                    <a asp-page="/Index">
+                        Home
+                    </a>
+
+                    <a asp-page="/Products">
+                        Products
+                    </a>
+
+                    <a asp-page="/Categories">
+                        Categories
+                    </a>
+
+                    <a asp-page="/Cart">
+                        Cart
+                    </a>
+                }
+
 
                 <partial name="_LoginPartial" />
 

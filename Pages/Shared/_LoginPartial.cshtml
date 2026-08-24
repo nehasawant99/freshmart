@@ -2,48 +2,98 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="account-dropdown">
+    @if (User.IsInRole("Admin"))
+    {
+        <!-- ADMIN ACCOUNT -->
 
-        <button type="button"
-                class="account-button">
+        <div class="account-dropdown">
 
-            Account ▾
+            <button type="button"
+                    class="account-button">
 
-        </button>
+                Admin ▾
+
+            </button>
 
 
-        <div class="account-menu">
+            <div class="account-menu">
 
-            <a asp-page="/Account/Profile">
-                My Profile
-            </a>
+                <a asp-page="/Account/Profile">
+                    Profile
+                </a>
 
-            <a asp-page="/Account/Profile"
-               asp-fragment="orders">
-                My Orders
-            </a>
 
-            <form method="post"
-                  asp-page="/Account/Logout"
-                  class="logout-form">
+                <form method="post"
+                      asp-page="/Account/Logout"
+                      class="logout-form">
 
-                <button type="submit"
-                        class="logout-button">
+                    <button type="submit"
+                            class="logout-button">
 
-                    Logout
+                        Logout
 
-                </button>
+                    </button>
 
-            </form>
+                </form>
+
+            </div>
 
         </div>
+    }
+    else
+    {
+        <!-- CUSTOMER ACCOUNT -->
 
-    </div>
+        <div class="account-dropdown">
+
+            <button type="button"
+                    class="account-button">
+
+                Account ▾
+
+            </button>
+
+
+            <div class="account-menu">
+
+                <a asp-page="/Account/Profile">
+                    My Profile
+                </a>
+
+
+                <a asp-page="/Account/Profile"
+                   asp-fragment="orders">
+
+                    My Orders
+
+                </a>
+
+
+                <form method="post"
+                      asp-page="/Account/Logout"
+                      class="logout-form">
+
+                    <button type="submit"
+                            class="logout-button">
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+    }
 }
 else
 {
+    <!-- GUEST -->
+
     <a asp-page="/Account/Login">
         Login
     </a>
