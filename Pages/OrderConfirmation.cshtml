@@ -1,0 +1,130 @@
+@page
+@model OrderConfirmationModel
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        @if (Model.Order != null)
+        {
+            <div class="confirmation-card">
+
+                <div class="confirmation-icon">
+                    ✓
+                </div>
+
+                <span class="section-label">
+                    FRESHMART
+                </span>
+
+                <h1>
+                    Order Placed Successfully!
+                </h1>
+
+                <p>
+                    Thank you for shopping with FreshMart.
+                    Your order has been received.
+                </p>
+
+
+                <div class="order-info">
+
+                    <div class="summary-row">
+
+                        <span>
+                            Order Number
+                        </span>
+
+                        <strong>
+                            #@Model.Order.Id
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Order Status
+                        </span>
+
+                        <strong>
+                            @Model.Order.Status
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₹@Model.Order.Subtotal
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <strong>
+                            ₹@Model.Order.DeliveryCharge
+                        </strong>
+
+                    </div>
+
+
+                    <hr />
+
+
+                    <div class="summary-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ₹@Model.Order.Total
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="confirmation-actions">
+
+                    <a asp-page="/Products"
+                       class="primary-button">
+
+                        Continue Shopping
+
+                    </a>
+
+
+                    <a asp-page="/Orders"
+                       class="secondary-button">
+
+                        My Orders
+
+                    </a>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</section>

@@ -1365,6 +1365,43 @@ select.form-control {
   padding: 0;
 }
 /* ==============================
+   confirmation card
+   ============================== */
+.confirmation-card {
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 40px;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.confirmation-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 32px;
+  font-weight: bold;
+  background: #e8f7ed;
+}
+
+.order-info {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+/* ==============================
    MOBILE
    ============================== */
 

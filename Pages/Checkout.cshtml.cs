@@ -1,0 +1,171 @@
+using System.Security.Claims;
+using GroceryShopping.Data;
+using GroceryShopping.Models;
+using GroceryShopping.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace GroceryShopping.Pages;
+
+[Authorize]
+public class CheckoutModel : PageModel
+{
+    private readonly CartService _cartService;
+    private readonly ApplicationDbContext _context;
+
+    public CheckoutModel(
+        CartService cartService,
+        ApplicationDbContext context)
+    {
+        _cartService = cartService;
+        _context = context;
+    }
+
+    public decimal Subtotal { get; set; }
+
+    public decimal DeliveryCharge { get; set; }
+
+    public decimal Total { get; set; }
+
+    [BindProperty]
+    public string FullName { get; set; } = string.Empty;
+
+    [BindProperty]
+    public string PhoneNumber { get; set; } = string.Empty;
+
+    [BindProperty]
+    public string Address { get; set; } = string.Empty;
+
+    [BindProperty]
+    public string City { get; set; } = string.Empty;
+
+    [BindProperty]
+    public string Pincode { get; set; } = string.Empty;
+
+
+    public void OnGet()
+    {
+        LoadSummary();
+    }
+
+
+    public async Task<IActionResult> OnPostAsync()
+    {
+        var cartItems = _cartService.GetCart();
+
+        if (cartItems.Count == 0)
+        {
+            return RedirectToPage("/Cart");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            LoadSummary();
+            return Page();
+        }
+
+        var userId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
+
+
+        // Calculate totals
+
+        Subtotal = _cartService.GetSubtotal();
+
+        DeliveryCharge = Subtotal >= 500 ? 0 : 40;
+
+        Total = Subtotal + DeliveryCharge;
+
+
+        // Create Order
+
+        var order = new Order
+        {
+            UserId = userId,
+
+            OrderDate = DateTime.UtcNow,
+
+            Subtotal = Subtotal,
+
+            DeliveryCharge = DeliveryCharge,
+
+            Total = Total,
+
+            Status = "Pending",
+
+            FullName = FullName,
+
+            PhoneNumber = PhoneNumber,
+
+            Address = Address,
+
+            City = City,
+
+            Pincode = Pincode
+        };
+
+
+        // Create Order Items
+
+        foreach (var item in cartItems)
+        {
+            var orderItem = new OrderItem
+            {
+                Order = order,
+
+                ProductId = item.ProductId,
+
+                ProductName = item.ProductName,
+
+                Price = item.Price,
+
+                Quantity = item.Quantity
+            };
+
+            order.OrderItems.Add(orderItem);
+        }
+
+
+        // Save Order + OrderItems
+
+        _context.Orders.Add(order);
+
+        await _context.SaveChangesAsync();
+
+
+        // Clear cart after successful order
+
+        _cartService.ClearCart();
+
+
+        // Go to order confirmation
+
+        return RedirectToPage(
+            "/OrderConfirmation",
+            new { id = order.Id });
+    }
+
+
+    private void LoadSummary()
+    {
+        Subtotal = _cartService.GetSubtotal();
+
+        if (Subtotal == 0 || Subtotal >= 500)
+        {
+            DeliveryCharge = 0;
+        }
+        else
+        {
+            DeliveryCharge = 40;
+        }
+
+        Total = Subtotal + DeliveryCharge;
+    }
+}
