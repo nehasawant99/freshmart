@@ -29,24 +29,27 @@ public class ProfileModel : PageModel
 
 
     public async Task OnGetAsync()
+{
+    var user = await _userManager.GetUserAsync(User);
+
+    if (user == null)
     {
-        var user = await _userManager.GetUserAsync(User);
+        return;
+    }
 
-        if (user == null)
-        {
-            return;
-        }
+    Email = user.Email ?? string.Empty;
 
-        Email = user.Email ?? string.Empty;
+    var roles = await _userManager.GetRolesAsync(user);
 
-        var roles = await _userManager.GetRolesAsync(user);
+    Role = roles.FirstOrDefault() ?? "Customer";
 
-        Role = roles.FirstOrDefault() ?? "Customer";
-
-
+    // Orders are only required for customers.
+    if (!User.IsInRole("Admin"))
+    {
         Orders = await _context.Orders
             .Where(o => o.UserId == user.Id)
             .OrderByDescending(o => o.OrderDate)
             .ToListAsync();
     }
+}
 }
