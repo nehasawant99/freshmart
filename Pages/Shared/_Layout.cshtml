@@ -28,9 +28,7 @@
 
             <a class="brand"
                asp-page="/Index">
-
                 FreshMart
-
             </a>
 
 
@@ -40,39 +38,17 @@
                     Home
                 </a>
 
-
                 <a asp-page="/Products">
                     Products
                 </a>
-
 
                 <a asp-page="/Categories">
                     Categories
                 </a>
 
-
                 <a asp-page="/Cart">
                     Cart
                 </a>
-
-
-                @if (User.Identity?.IsAuthenticated == true)
-                {
-                    <a asp-page="/Account/Profile"
-                       asp-fragment="orders">
-
-                        My Orders
-
-                    </a>
-
-
-                    <a asp-page="/Account/Profile">
-
-                        Profile
-
-                    </a>
-                }
-
 
                 <partial name="_LoginPartial" />
 

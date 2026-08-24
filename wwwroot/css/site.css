@@ -92,7 +92,62 @@ img {
 .nav-links a:hover {
     color: #15803d;
 }
+ /* =========================
+    ACCOUNT DROPDOWN
+    ========================= */
 
+    .account-dropdown {
+      position: relative;
+  }
+  
+  .account-button {
+      background: none;
+      border: none;
+      font: inherit;
+      cursor: pointer;
+      padding: 8px 0;
+      color: inherit;
+  }
+  
+  .account-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      min-width: 180px;
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 8px 0;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      z-index: 1000;
+  }
+  
+  .account-dropdown:hover .account-menu {
+      display: block;
+  }
+  
+  .account-menu a,
+  .account-menu .logout-button {
+      display: block;
+      width: 100%;
+      padding: 10px 16px;
+      text-align: left;
+      text-decoration: none;
+      background: none;
+      border: none;
+      font: inherit;
+      cursor: pointer;
+      box-sizing: border-box;
+  }
+  
+  .account-menu a:hover,
+  .account-menu .logout-button:hover {
+      background: #f5f5f5;
+  }
+  
+  .account-menu .logout-form {
+      margin: 0;
+  }
 
 /* =========================================
    HERO

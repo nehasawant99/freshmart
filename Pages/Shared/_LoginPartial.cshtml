@@ -4,20 +4,43 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <a asp-page="/Account/Profile">
-        Profile
-    </a>
+    <div class="account-dropdown">
 
-    <form method="post"
-          asp-page="/Account/Logout"
-          class="logout-form">
+        <button type="button"
+                class="account-button">
 
-        <button type="submit"
-                class="logout-button">
-            Logout
+            Account ▾
+
         </button>
 
-    </form>
+
+        <div class="account-menu">
+
+            <a asp-page="/Account/Profile">
+                My Profile
+            </a>
+
+            <a asp-page="/Account/Profile"
+               asp-fragment="orders">
+                My Orders
+            </a>
+
+            <form method="post"
+                  asp-page="/Account/Logout"
+                  class="logout-form">
+
+                <button type="submit"
+                        class="logout-button">
+
+                    Logout
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
 }
 else
 {
