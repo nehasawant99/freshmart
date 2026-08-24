@@ -15,24 +15,32 @@
                 FRESHMART ACCOUNT
             </span>
 
-            <h1>My Profile</h1>
+            <h1>
+                My Profile
+            </h1>
 
             <p class="profile-subtitle">
                 Manage your FreshMart account information.
             </p>
 
 
+            <!-- PROFILE CARD -->
+
             <div class="profile-card">
 
-               <div class="profile-avatar">
+                <div class="profile-avatar">
+
                     @(string.IsNullOrWhiteSpace(Model.Email)
-                       ? "U"
-                       : Model.Email.Trim().Substring(0, 1).ToUpper())
-               </div>
+                        ? "U"
+                        : Model.Email.Trim().Substring(0, 1).ToUpper())
+
+                </div>
+
 
                 <div class="profile-info">
 
                     <div class="profile-row">
+
                         <span class="profile-label">
                             Email
                         </span>
@@ -40,10 +48,12 @@
                         <span class="profile-value">
                             @Model.Email
                         </span>
+
                     </div>
 
 
                     <div class="profile-row">
+
                         <span class="profile-label">
                             Account Type
                         </span>
@@ -51,6 +61,7 @@
                         <span class="profile-value">
                             @Model.Role
                         </span>
+
                     </div>
 
                 </div>
@@ -63,7 +74,9 @@
 
                         <button type="submit"
                                 class="logout-button profile-logout">
+
                             Logout
+
                         </button>
 
                     </form>
@@ -72,8 +85,135 @@
 
             </div>
 
+
+            <!-- MY ORDERS -->
+
+            <div class="profile-orders" id="orders">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <span class="section-label">
+                            ORDER HISTORY
+                        </span>
+
+                        <h2>
+                            My Orders
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                @if (Model.Orders.Count == 0)
+                {
+                    <div class="empty-orders">
+
+                        <h3>
+                            No orders yet
+                        </h3>
+
+                        <p>
+                            Your FreshMart orders will appear here.
+                        </p>
+
+                        <a asp-page="/Products"
+                           class="primary-button">
+
+                            Start Shopping
+
+                        </a>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="orders-list">
+
+                        @foreach (var order in Model.Orders)
+                        {
+                            <div class="order-card">
+
+                                <div class="order-card-header">
+
+                                    <div>
+
+                                        <span class="section-label">
+                                            ORDER #@order.Id
+                                        </span>
+
+                                        <h3>
+                                            Order #@order.Id
+                                        </h3>
+
+<p>
+    @order.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+</p>
+                                    </div>
+
+
+                                    <span class="order-status">
+                                        @order.Status
+                                    </span>
+
+                                </div>
+
+
+                                <div class="order-card-details">
+
+                                    <div>
+
+                                        <span>
+                                            Subtotal
+                                        </span>
+
+                                        <strong>
+                                            ₹@order.Subtotal
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>
+                                            Delivery
+                                        </span>
+
+                                        <strong>
+                                            ₹@order.DeliveryCharge
+                                        </strong>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span>
+                                            Total
+                                        </span>
+
+                                        <strong>
+                                            ₹@order.Total
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+
+            </div>
+
         </div>
 
     </div>
 
 </section>
+```

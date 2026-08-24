@@ -1,38 +1,82 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>@ViewData["Title"] - FreshMart</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="~/css/site.css" />
+    <title>
+        @ViewData["Title"] - FreshMart
+    </title>
+
+    <link rel="stylesheet"
+          href="~/css/site.css" />
+
 </head>
+
 
 <body>
 
     <!-- Navigation -->
+
     <header class="navbar">
 
         <div class="container navbar-content">
 
-            <a class="brand" asp-page="/Index">
+            <a class="brand"
+               asp-page="/Index">
+
                 FreshMart
+
             </a>
+
 
             <nav class="nav-links">
 
-    <a asp-page="/Index">Home</a>
+                <a asp-page="/Index">
+                    Home
+                </a>
 
-    <a asp-page="/Products">Products</a>
 
-    <a asp-page="/Categories">Categories</a>
+                <a asp-page="/Products">
+                    Products
+                </a>
 
-    <a asp-page="/Cart">Cart</a>
 
-    <partial name="_LoginPartial" />
+                <a asp-page="/Categories">
+                    Categories
+                </a>
 
-</nav>
+
+                <a asp-page="/Cart">
+                    Cart
+                </a>
+
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-page="/Account/Profile"
+                       asp-fragment="orders">
+
+                        My Orders
+
+                    </a>
+
+
+                    <a asp-page="/Account/Profile">
+
+                        Profile
+
+                    </a>
+                }
+
+
+                <partial name="_LoginPartial" />
+
+            </nav>
 
         </div>
 
@@ -42,7 +86,9 @@
     <!-- Main Page Content -->
 
     <main>
+
         @RenderBody()
+
     </main>
 
 
@@ -61,7 +107,10 @@
     </footer>
 
 
-    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync(
+        "Scripts",
+        required: false)
 
 </body>
+
 </html>

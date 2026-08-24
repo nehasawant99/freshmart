@@ -1,0 +1,134 @@
+@page
+@model OrdersModel
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART
+            </span>
+
+            <h1>
+                My Orders
+            </h1>
+
+            <p>
+                View your previous FreshMart orders.
+            </p>
+
+        </div>
+
+
+        @if (Model.Orders.Count == 0)
+        {
+            <div class="empty-cart">
+
+                <h2>
+                    No orders yet
+                </h2>
+
+                <p>
+                    Your completed orders will appear here.
+                </p>
+
+                <a asp-page="/Products"
+                   class="primary-button">
+
+                    Start Shopping
+
+                </a>
+
+            </div>
+        }
+        else
+        {
+            <div class="orders-list">
+
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="order-card">
+
+                        <div class="order-card-header">
+
+                            <div>
+
+                                <span class="section-label">
+                                    ORDER #@order.Id
+                                </span>
+
+                                <h2>
+                                    Order #@order.Id
+                                </h2>
+
+                                <p>
+                                    @order.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                                </p>
+
+                            </div>
+
+
+                            <span class="status @order.Status.ToLower()">
+                                @order.Status
+                            </span>
+
+                        </div>
+
+
+                        <div class="order-card-details">
+
+                            <div>
+
+                                <span>
+                                    Items
+                                </span>
+
+                                <strong>
+                                    @order.OrderItems.Count
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong>
+                                    ₹@order.Total
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-card-actions">
+
+                            <a asp-page="/OrderDetails"
+                               asp-route-id="@order.Id"
+                               class="secondary-button">
+
+                                View Details
+
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>
