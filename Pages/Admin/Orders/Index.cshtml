@@ -1,0 +1,96 @@
+@page
+@model GroceryShopping.Pages.Admin.Orders.IndexModel
+
+@{
+    ViewData["Title"] = "Manage Orders";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART ADMIN
+            </span>
+
+            <h1>
+                Manage Orders
+            </h1>
+
+            <p>
+                View and manage customer orders.
+            </p>
+
+        </div>
+
+
+        @if (Model.Orders.Count == 0)
+        {
+            <div class="admin-empty-state">
+
+                <h3>
+                    No orders yet
+                </h3>
+
+                <p>
+                    Customer orders will appear here.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="admin-orders-list">
+
+                @foreach (var order in Model.Orders)
+                {
+                    <div class="admin-order-row">
+
+                        <div class="admin-order-info">
+
+                            <strong>
+                                Order #@order.Id
+                            </strong>
+
+                            <span>
+                                @(order.OrderDate
+                                    .ToLocalTime()
+                                    .ToString("dd MMM yyyy, hh:mm tt"))
+                            </span>
+
+                        </div>
+
+
+                        <div class="admin-order-total">
+
+                            <strong>
+                                ₹@order.Total.ToString("0.00")
+                            </strong>
+
+                        </div>
+
+
+                        <span class="admin-order-status">
+                            @order.Status
+                        </span>
+
+
+                        <a asp-page="/Admin/Orders/Details"
+                           asp-route-id="@order.Id"
+                           class="admin-view-button">
+
+                            View
+
+                        </a>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

@@ -1,0 +1,295 @@
+@page "{id:int}"
+@model GroceryShopping.Pages.Admin.Orders.DetailsModel
+
+@{
+    ViewData["Title"] = $"Order #{Model.Order?.Id}";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART ADMIN
+            </span>
+
+            <h1>
+                Order #@Model.Order!.Id
+            </h1>
+
+            <p>
+                View complete order information.
+            </p>
+
+        </div>
+
+
+        <!-- Order Information -->
+
+        <div class="admin-order-details">
+
+            <div class="admin-detail-card">
+
+                <span class="dashboard-label">
+                    ORDER INFORMATION
+                </span>
+
+                <div class="admin-detail-row">
+
+                    <span>
+                        Order Date
+                    </span>
+
+                    <strong>
+                        @(Model.Order.OrderDate
+                            .ToLocalTime()
+                            .ToString("dd MMM yyyy, hh:mm tt"))
+                    </strong>
+
+                </div>
+
+
+                <div class="admin-detail-row">
+
+    <span>
+        Status
+    </span>
+
+    <div class="admin-status-control">
+
+<span class="admin-order-status
+    @(Model.Order.Status == "Confirmed" ? "status-confirmed" :
+      Model.Order.Status == "OutForDelivery" ? "status-out-for-delivery" :
+      Model.Order.Status == "Delivered" ? "status-delivered" :
+      Model.Order.Status == "Cancelled" ? "status-cancelled" :
+      "status-pending")">
+
+    @(Model.Order.Status == "OutForDelivery"
+        ? "Out for Delivery"
+        : Model.Order.Status)
+
+</span>
+
+        <form method="post"
+              asp-page-handler="UpdateStatus"
+              asp-route-id="@Model.Order.Id">
+
+            <select name="status"
+                    class="admin-status-select">
+
+                <option value="Pending"
+                        selected="@(Model.Order.Status == "Pending")">
+                    Pending
+                </option>
+
+                <option value="Confirmed"
+                        selected="@(Model.Order.Status == "Confirmed")">
+                    Confirmed
+                </option>
+
+                <option value="OutForDelivery"
+                        selected="@(Model.Order.Status == "OutForDelivery")">
+                    Out for Delivery
+                </option>
+
+                <option value="Delivered"
+                        selected="@(Model.Order.Status == "Delivered")">
+                    Delivered
+                </option>
+
+                <option value="Cancelled"
+                        selected="@(Model.Order.Status == "Cancelled")">
+                    Cancelled
+                </option>
+
+            </select>
+
+            <button type="submit"
+                    class="admin-update-status-button">
+                Update Status
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+            </div>
+
+
+            <!-- Customer / Delivery -->
+
+            <div class="admin-detail-card">
+
+                <span class="dashboard-label">
+                    CUSTOMER & DELIVERY
+                </span>
+
+                <div class="admin-detail-row">
+
+                    <span>
+                        Name
+                    </span>
+
+                    <strong>
+                        @Model.Order.FullName
+                    </strong>
+
+                </div>
+
+
+                <div class="admin-detail-row">
+
+                    <span>
+                        Phone
+                    </span>
+
+                    <strong>
+                        @Model.Order.PhoneNumber
+                    </strong>
+
+                </div>
+
+
+                <div class="admin-detail-row">
+
+                    <span>
+                        Address
+                    </span>
+
+                    <strong>
+                        @Model.Order.Address
+                    </strong>
+
+                </div>
+
+
+                <div class="admin-detail-row">
+
+                    <span>
+                        City
+                    </span>
+
+                    <strong>
+                        @Model.Order.City
+                    </strong>
+
+                </div>
+
+
+                <div class="admin-detail-row">
+
+                    <span>
+                        Pincode
+                    </span>
+
+                    <strong>
+                        @Model.Order.Pincode
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Ordered Products -->
+
+        <div class="admin-detail-card admin-items-card">
+
+            <span class="dashboard-label">
+                ORDER ITEMS
+            </span>
+
+            <div class="admin-order-items">
+
+                @foreach (var item in Model.Order.OrderItems)
+                {
+                    <div class="admin-order-item">
+
+                        <div>
+
+                            <strong>
+                                @item.ProductName
+                            </strong>
+
+                            <span>
+                                ₹@item.Price.ToString("0.00")
+                                ×
+                                @item.Quantity
+                            </span>
+
+                        </div>
+
+                        <strong>
+                            ₹@item.Total.ToString("0.00")
+                        </strong>
+
+                    </div>
+                }
+
+            </div>
+
+
+            <!-- Order Summary -->
+
+            <div class="admin-order-summary">
+
+                <div>
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong>
+                        ₹@Model.Order.Subtotal.ToString("0.00")
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span>
+                        Delivery
+                    </span>
+
+                    <strong>
+                        ₹@Model.Order.DeliveryCharge.ToString("0.00")
+                    </strong>
+                </div>
+
+
+                <div class="admin-order-grand-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+                        ₹@Model.Order.Total.ToString("0.00")
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Back -->
+
+        <div class="admin-detail-actions">
+
+        <a href="/Admin/Orders"
+           class="secondary-button">
+              Back to Orders
+        </a>
+
+</div>
+
+    </div>
+
+</section>

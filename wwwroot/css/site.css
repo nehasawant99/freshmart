@@ -1810,7 +1810,265 @@ select.form-control {
     margin: 0;
     color: #6b7280;
 }
+/* =========================================
+   ADMIN ORDER DETAILS
+   ========================================= */
 
+   .admin-order-details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+
+.admin-detail-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+.admin-detail-card .dashboard-label {
+    display: block;
+    margin-bottom: 18px;
+}
+
+
+.admin-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+
+.admin-detail-row:last-child {
+    border-bottom: none;
+}
+
+
+.admin-detail-row > span:first-child {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+.admin-detail-row strong {
+    color: #111827;
+    font-size: 15px;
+    text-align: right;
+}
+
+
+/* Order status */
+
+.admin-detail-row .admin-order-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fff7ed;
+    color: #c2410c;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* Order items */
+
+.admin-items-card {
+    margin-top: 24px;
+}
+
+
+.admin-order-items {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.admin-order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+
+.admin-order-item:last-child {
+    border-bottom: none;
+}
+
+
+.admin-order-item > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.admin-order-item strong {
+    color: #111827;
+    font-size: 15px;
+}
+
+
+.admin-order-item span {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* Order summary */
+
+.admin-order-summary {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #e5e7eb;
+}
+
+
+.admin-order-summary > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+}
+
+
+.admin-order-summary span {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+.admin-order-summary strong {
+    color: #111827;
+    font-size: 15px;
+}
+
+
+.admin-order-grand-total {
+    margin-top: 10px;
+    padding-top: 16px !important;
+    border-top: 2px solid #e5e7eb;
+}
+
+
+.admin-order-grand-total span {
+    color: #111827;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+.admin-order-grand-total strong {
+    font-size: 20px;
+}
+
+
+/* Back button */
+
+.admin-detail-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+
+.admin-detail-actions .secondary-button {
+  color: #111827;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  transition: 0.2s ease;
+}
+.admin-detail-actions .secondary-button:hover {
+  color: #111827;
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+/* =========================================
+   ADMIN STATUS CONTROL
+   ========================================= */
+
+   .admin-status-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-status-control form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-status-select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.admin-status-select:focus {
+    outline: none;
+    border-color: #2e7d32;
+}
+
+.admin-update-status-button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    background: #2e7d32;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.admin-update-status-button:hover {
+    background: #256528;
+}
+/* =========================================
+   ORDER STATUS COLORS
+   ========================================= */
+
+   .admin-order-status.status-pending {
+    background: #fff7ed;
+    color: #c2410c;
+}
+
+.admin-order-status.status-confirmed {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+
+.admin-order-status.status-out-for-delivery {
+    background: #f5f3ff;
+    color: #6d28d9;
+}
+
+.admin-order-status.status-delivered {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.admin-order-status.status-cancelled {
+    background: #fef2f2;
+    color: #b91c1c;
+}
 
 /* =========================================
    RESPONSIVE
