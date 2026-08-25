@@ -1,0 +1,139 @@
+@page
+@model GroceryShopping.Pages.Admin.Categories.IndexModel
+
+@{
+    ViewData["Title"] = "Manage Categories";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART ADMIN
+            </span>
+
+            <h1>
+                Manage Categories
+            </h1>
+
+            <p>
+                Add and manage product categories.
+            </p>
+
+        </div>
+         @if (TempData["DeleteSuccess"] != null)
+        {
+            <div class="admin-success-message">
+            @TempData["DeleteSuccess"]
+        </div>
+       }
+
+        @if (TempData["DeleteError"] != null)
+       {
+             <div class="admin-error-message">
+             @TempData["DeleteError"]
+    </div>
+      }
+
+        <div class="admin-category-header">
+
+            <div>
+                <h2>
+                    Categories
+                </h2>
+
+                <p>
+                    Manage the categories used by FreshMart products.
+                </p>
+            </div>
+
+            <a asp-page="/Admin/Categories/Create"
+               class="primary-button">
+
+                + Add Category
+
+            </a>
+
+        </div>
+
+
+        @if (Model.Categories.Count == 0)
+        {
+            <div class="admin-empty-state">
+
+                <h3>
+                    No categories yet
+                </h3>
+
+                <p>
+                    Create your first product category.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="admin-categories-list">
+
+                @foreach (var category in Model.Categories)
+                {
+                    <div class="admin-category-row">
+
+                        <div class="admin-category-info">
+
+                            <strong>
+                                @category.Name
+                            </strong>
+
+                            <span>
+                                @category.Description
+                            </span>
+
+                        </div>
+
+
+                        <div class="admin-category-count">
+
+                            <strong>
+                                @category.Products.Count
+                            </strong>
+
+                            <span>
+                                Products
+                            </span>
+
+                        </div>
+
+
+                        <div class="admin-category-actions">
+
+                            <a asp-page="/Admin/Categories/Edit"
+                               asp-route-id="@category.Id"
+                               class="admin-view-button">
+
+                                Edit
+
+                            </a>
+
+                            <a asp-page="/Admin/Categories/Delete"
+                               asp-route-id="@category.Id"
+                               class="admin-delete-button">
+
+                                Delete
+
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

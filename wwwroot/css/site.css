@@ -2145,7 +2145,342 @@ select.form-control {
     color: #111827;
 }
 
+/* =========================================
+   ADMIN CATEGORIES
+   ========================================= */
 
+   .admin-category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.admin-category-header h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+}
+
+.admin-category-header p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   CATEGORY LIST
+   ========================================= */
+
+.admin-categories-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-category-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 22px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    transition: box-shadow 0.2s ease,
+                border-color 0.2s ease;
+}
+
+.admin-category-row:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================
+   CATEGORY INFORMATION
+   ========================================= */
+
+.admin-category-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-category-info strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin-category-info span {
+    display: block;
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   PRODUCT COUNT
+   ========================================= */
+
+.admin-category-count {
+    min-width: 90px;
+    text-align: center;
+}
+
+.admin-category-count strong {
+    display: block;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.admin-category-count span {
+    display: block;
+    margin-top: 3px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+   ========================================= */
+
+.admin-category-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.admin-category-actions .admin-view-button,
+.admin-category-actions .admin-delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+
+/* Edit */
+
+.admin-category-actions .admin-view-button {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.admin-category-actions .admin-view-button:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+
+/* Delete */
+
+.admin-category-actions .admin-delete-button {
+    background: #ffffff;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.admin-category-actions .admin-delete-button:hover {
+    background: #fef2f2;
+    color: #991b1b;
+}
+
+/* =========================================
+   CATEGORY ROW
+   ========================================= */
+
+.admin-category-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.admin-category-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-category-info strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.admin-category-info span {
+    display: block;
+}
+
+/* =========================================
+   ADMIN CATEGORY MESSAGES
+   ========================================= */
+
+   .admin-success-message,
+   .admin-error-message {
+       margin-bottom: 20px;
+       padding: 14px 16px;
+       border-radius: 8px;
+       font-size: 14px;
+       font-weight: 500;
+   }
+   
+   .admin-success-message {
+       background: #f0fdf4;
+       border: 1px solid #bbf7d0;
+       color: #166534;
+   }
+   
+   .admin-error-message {
+       background: #fef2f2;
+       border: 1px solid #fecaca;
+       color: #991b1b;
+   }
+/* =========================================
+   ADMIN DELETE CATEGORY
+   ========================================= */
+
+   .delete-warning {
+    margin-bottom: 24px;
+}
+
+.delete-warning h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    color: #111827;
+}
+
+.delete-warning p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   DELETE DETAILS
+   ========================================= */
+
+.admin-delete-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.admin-delete-details > div {
+    padding: 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+}
+
+.admin-delete-details span {
+    display: block;
+    margin-bottom: 5px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.admin-delete-details strong {
+    display: block;
+    color: #111827;
+    font-size: 16px;
+}
+
+
+/* =========================================
+   DELETE WARNING MESSAGE
+   ========================================= */
+
+.admin-delete-warning {
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+
+.admin-delete-warning strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #991b1b;
+    font-size: 14px;
+}
+
+.admin-delete-warning p {
+    margin: 0;
+    color: #b91c1c;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM ACTIONS
+   ========================================= */
+
+.admin-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.admin-form-actions .secondary-button,
+.admin-form-actions .admin-delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+
+/* Back / Cancel */
+
+.admin-form-actions .secondary-button {
+    background: #ffffff;
+    color: #374151;
+    border: 1px solid #d1d5db;
+}
+
+.admin-form-actions .secondary-button:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+
+/* Delete button */
+
+.admin-form-actions .admin-delete-button {
+    background: #dc2626;
+    color: #ffffff;
+    border: 1px solid #dc2626;
+}
+
+.admin-form-actions .admin-delete-button:hover {
+    background: #b91c1c;
+    color: #ffffff;
+}
 
 /* =========================================
    RESPONSIVE

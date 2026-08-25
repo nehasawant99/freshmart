@@ -1,0 +1,126 @@
+@page "{id:int}"
+@model GroceryShopping.Pages.Admin.Categories.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART ADMIN
+            </span>
+
+            <h1>
+                Delete Category
+            </h1>
+
+            <p>
+                Review the category before deleting it.
+            </p>
+
+        </div>
+
+
+        <div class="admin-form-card">
+
+            <div class="delete-warning">
+
+                <h2>
+                    Delete "@Model.Category.Name"?
+                </h2>
+
+                <p>
+                    This action cannot be undone.
+                </p>
+
+            </div>
+
+
+            <div class="admin-delete-details">
+
+                <div>
+                    <span>
+                        Category
+                    </span>
+
+                    <strong>
+                        @Model.Category.Name
+                    </strong>
+                </div>
+
+
+                <div>
+                    <span>
+                        Products
+                    </span>
+
+                    <strong>
+                        @Model.ProductCount
+                    </strong>
+                </div>
+
+            </div>
+
+
+            @if (Model.ProductCount > 0)
+            {
+                <div class="admin-delete-warning">
+
+                    <strong>
+                        Category cannot be deleted.
+                    </strong>
+
+                    <p>
+                        This category still contains
+                        @Model.ProductCount product(s).
+                        Remove or move those products first.
+                    </p>
+
+                </div>
+
+
+                <div class="admin-form-actions">
+
+                    <a asp-page="/Admin/Categories/Index"
+                     class="secondary-button">
+                     Back to Categories
+
+                    </a>
+
+                </div>
+            }
+            else
+            {
+                <form method="post">
+
+                    <div class="admin-form-actions">
+
+                        <a asp-page="/Admin/Categories"
+                           class="secondary-button">
+
+                            Cancel
+
+                        </a>
+
+                        <button type="submit"
+                                class="admin-delete-button">
+
+                            Delete Category
+
+                        </button>
+
+                    </div>
+
+                </form>
+            }
+
+        </div>
+
+    </div>
+
+</section>
