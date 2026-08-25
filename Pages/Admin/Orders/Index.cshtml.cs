@@ -18,9 +18,40 @@ public class IndexModel : PageModel
 
     public List<Order> Orders { get; set; } = new();
 
-    public async Task OnGetAsync()
+    public string Search { get; set; } = string.Empty;
+
+    public string Status { get; set; } = string.Empty;
+
+
+    public async Task OnGetAsync(
+        string? search,
+        string? status)
     {
-        Orders = await _context.Orders
+        Search = search?.Trim() ?? string.Empty;
+        Status = status?.Trim() ?? string.Empty;
+
+        var query = _context.Orders
+            .AsQueryable();
+
+
+        // Search by Order ID
+        if (!string.IsNullOrWhiteSpace(Search))
+        {
+            if (int.TryParse(Search, out int orderId))
+            {
+                query = query.Where(o => o.Id == orderId);
+            }
+        }
+
+
+        // Filter by status
+        if (!string.IsNullOrWhiteSpace(Status))
+        {
+            query = query.Where(o => o.Status == Status);
+        }
+
+
+        Orders = await query
             .OrderByDescending(o => o.OrderDate)
             .ToListAsync();
     }

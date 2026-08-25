@@ -26,16 +26,96 @@
         </div>
 
 
+        <!-- Search and Filter -->
+
+        <form method="get" class="admin-order-filters">
+
+            <div class="admin-filter-group">
+
+                <label for="search">
+                    Search Orders
+                </label>
+
+                <input type="text"
+                       id="search"
+                       name="Search"
+                       value="@Model.Search"
+                       placeholder="Search by order ID or customer..." />
+
+            </div>
+
+
+            <div class="admin-filter-group">
+
+                <label for="status">
+                    Status
+                </label>
+
+                <select id="status"
+                        name="Status">
+
+                    <option value="">
+                        All Statuses
+                    </option>
+
+                    <option value="Pending"
+                            selected="@(Model.Status == "Pending")">
+                        Pending
+                    </option>
+
+                    <option value="Confirmed"
+                            selected="@(Model.Status == "Confirmed")">
+                        Confirmed
+                    </option>
+
+                    <option value="OutForDelivery"
+                            selected="@(Model.Status == "OutForDelivery")">
+                        Out for Delivery
+                    </option>
+
+                    <option value="Delivered"
+                            selected="@(Model.Status == "Delivered")">
+                        Delivered
+                    </option>
+
+                    <option value="Cancelled"
+                            selected="@(Model.Status == "Cancelled")">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button type="submit"
+                    class="primary-button admin-filter-button">
+
+                Search
+
+            </button>
+
+
+            <a asp-page="/Admin/Orders"
+               class="secondary-button">
+
+                Clear
+
+            </a>
+
+        </form>
+
+
         @if (Model.Orders.Count == 0)
         {
             <div class="admin-empty-state">
 
                 <h3>
-                    No orders yet
+                    No orders found
                 </h3>
 
                 <p>
-                    Customer orders will appear here.
+                    Try changing your search or filter.
                 </p>
 
             </div>
@@ -73,7 +153,9 @@
 
 
                         <span class="admin-order-status">
-                            @order.Status
+                            @(order.Status == "OutForDelivery"
+                                ? "Out for Delivery"
+                                : order.Status)
                         </span>
 
 
