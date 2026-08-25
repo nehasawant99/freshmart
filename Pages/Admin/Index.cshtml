@@ -1,0 +1,192 @@
+@page
+@model GroceryShopping.Pages.Admin.IndexModel
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART ADMIN
+            </span>
+
+            <h1>
+                Dashboard
+            </h1>
+
+            <p>
+                Manage your FreshMart store from one place.
+            </p>
+
+        </div>
+
+
+        <!-- Dashboard Statistics -->
+        <div class="admin-dashboard">
+
+            <!-- Products -->
+            <div class="dashboard-card">
+
+                <span class="dashboard-label">
+                    PRODUCTS
+                </span>
+
+                <h2>
+                    @Model.ProductCount
+                </h2>
+
+                <p>
+                    Total products
+                </p>
+
+            </div>
+
+
+            <!-- Orders -->
+            <div class="dashboard-card">
+
+                <span class="dashboard-label">
+                    ORDERS
+                </span>
+
+                <h2>
+                    @Model.OrderCount
+                </h2>
+
+                <p>
+                    Total orders
+                </p>
+
+            </div>
+
+
+            <!-- Customers -->
+            <div class="dashboard-card">
+
+                <span class="dashboard-label">
+                    CUSTOMERS
+                </span>
+
+                <h2>
+                    @Model.CustomerCount
+                </h2>
+
+                <p>
+                    Registered customers
+                </p>
+
+            </div>
+
+
+            <!-- Sales -->
+            <div class="dashboard-card">
+
+                <span class="dashboard-label">
+                    SALES
+                </span>
+
+                <h2>
+                    ₹@Model.TotalSales.ToString("0.00")
+                </h2>
+
+                <p>
+                    Total sales
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Recent Orders -->
+        <section class="admin-recent-orders">
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        ORDER ACTIVITY
+                    </span>
+
+                    <h2>
+                        Recent Orders
+                    </h2>
+
+                </div>
+
+                <span class="admin-view-link">
+                    Latest 5 orders
+                </span>
+
+            </div>
+
+
+            @if (Model.RecentOrders.Count == 0)
+            {
+                <div class="admin-empty-state">
+
+                    <h3>
+                        No orders yet
+                    </h3>
+
+                    <p>
+                        Customer orders will appear here.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="admin-orders-list">
+
+                    @foreach (var order in Model.RecentOrders)
+                    {
+                        <div class="admin-order-row">
+
+                            <!-- Order Information -->
+                            <div class="admin-order-info">
+
+                                <strong>
+                                    Order #@order.Id
+                                </strong>
+
+            <span>
+                @(order.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt"))
+            </span>
+
+                            </div>
+
+
+                            <!-- Order Total -->
+                            <div class="admin-order-total">
+
+                                <strong>
+                                    ₹@order.Total.ToString("0.00")
+                                </strong>
+
+                            </div>
+
+
+                            <!-- Order Status -->
+                            <span class="admin-order-status">
+                                @order.Status
+                            </span>
+
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </section>
+
+    </div>
+
+</section>
