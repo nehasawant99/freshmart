@@ -1,0 +1,106 @@
+@page
+@model GroceryShopping.Pages.Admin.Customers.IndexModel
+
+@{
+    ViewData["Title"] = "Manage Customers";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART ADMIN
+            </span>
+
+            <h1>
+                Manage Customers
+            </h1>
+
+            <p>
+                View registered FreshMart customers.
+            </p>
+
+        </div>
+
+
+        <form method="get" class="admin-search-form">
+
+            <input type="text"
+                   asp-for="Search"
+                   class="admin-search-input"
+                   placeholder="Search by email or username..." />
+
+            <button type="submit"
+                    class="admin-search-button">
+
+                Search
+
+            </button>
+
+        </form>
+
+
+        @if (Model.Customers.Count == 0)
+        {
+            <div class="admin-empty-state">
+
+                <h3>
+                    No customers found
+                </h3>
+
+                <p>
+                    Try searching with a different email or username.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="admin-customer-list">
+
+                @foreach (var customer in Model.Customers)
+                {
+                    <div class="admin-customer-row">
+
+                        <div class="admin-customer-info">
+
+                            <strong>
+                                @(customer.Email ?? "No email")
+                            </strong>
+
+                            <span>
+                                Customer
+                            </span>
+
+                        </div>
+
+
+                        <div class="admin-customer-email">
+
+                            <span>
+                                @(customer.UserName ?? "No username")
+                            </span>
+
+                        </div>
+
+
+                        <a asp-page="/Admin/Customers/Details"
+                           asp-route-id="@customer.Id"
+                           class="admin-view-button">
+
+                            View
+
+                        </a>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+    </div>
+
+</section>

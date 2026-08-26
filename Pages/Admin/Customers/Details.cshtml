@@ -1,0 +1,171 @@
+@page "{id}"
+@model GroceryShopping.Pages.Admin.Customers.DetailsModel
+
+@{
+    ViewData["Title"] = "Customer Details";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART ADMIN
+            </span>
+
+            <h1>
+                Customer Details
+            </h1>
+
+            <p>
+                View customer information and order history.
+            </p>
+
+        </div>
+
+
+        <div class="admin-customer-details">
+
+            <div class="admin-detail-card">
+
+                <span class="dashboard-label">
+                    CUSTOMER
+                </span>
+
+                <h2>
+                    @(Model.Customer.Email ?? "No email")
+                </h2>
+
+                <p>
+                    Registered customer
+                </p>
+
+            </div>
+
+
+            <div class="admin-detail-card">
+
+                <span class="dashboard-label">
+                    EMAIL
+                </span>
+
+                <h2>
+                    @(Model.Customer.UserName ?? "No username")
+                </h2>
+
+                <p>
+                    Customer account
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="admin-recent-orders">
+
+            <div class="admin-section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        ORDER HISTORY
+                    </span>
+
+                    <h2>
+                        Customer Orders
+                    </h2>
+
+                </div>
+
+                <span class="admin-view-link">
+                    @Model.Orders.Count orders
+                </span>
+
+            </div>
+
+
+            @if (Model.Orders.Count == 0)
+            {
+                <div class="admin-empty-state">
+
+                    <h3>
+                        No orders yet
+                    </h3>
+
+                    <p>
+                        This customer has not placed any orders.
+                    </p>
+
+                </div>
+            }
+            else
+            {
+                <div class="admin-orders-list">
+
+                    @foreach (var order in Model.Orders)
+                    {
+                        <div class="admin-order-row">
+
+                            <div class="admin-order-info">
+
+                                <strong>
+                                    Order #@order.Id
+                                </strong>
+
+                                <span>
+                                    @order.OrderDate
+                                        .ToLocalTime()
+                                        .ToString("dd MMM yyyy, hh:mm tt")
+                                </span>
+
+                            </div>
+
+
+                            <div class="admin-order-total">
+
+                                <strong>
+                                    ₹@order.Total.ToString("0.00")
+                                </strong>
+
+                            </div>
+
+
+                            <span class="admin-order-status">
+                                @order.Status
+                            </span>
+
+
+                            <a asp-page="/Admin/Orders/Details"
+                               asp-route-id="@order.Id"
+                               class="admin-view-button">
+
+                                View
+
+                            </a>
+
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+
+        <div class="admin-form-actions admin-back-only">
+
+            <a asp-page="/Admin/Customers/Index"
+               class="secondary-button">
+
+                Back to Customers
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>

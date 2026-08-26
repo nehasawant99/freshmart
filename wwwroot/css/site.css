@@ -2521,6 +2521,108 @@ select.form-control {
 
 }
 /* =========================================
+   ADMIN CUSTOMERS
+   ========================================= */
+
+   .admin-customer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+
+/* =========================================
+   CUSTOMER ROW
+   ========================================= */
+
+.admin-customer-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 22px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.admin-customer-row:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+
+/* =========================================
+   CUSTOMER INFORMATION
+   ========================================= */
+
+.admin-customer-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-customer-info strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.admin-customer-info span {
+    display: block;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   CUSTOMER EMAIL
+   ========================================= */
+
+.admin-customer-email {
+    min-width: 220px;
+}
+
+.admin-customer-email span {
+    color: #4b5563;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================
+   VIEW BUTTON
+   ========================================= */
+
+.admin-customer-row .admin-view-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    height: 38px;
+    padding: 0 14px;
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.2s ease,
+                color 0.2s ease;
+}
+
+.admin-customer-row .admin-view-button:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+
+
+/* =========================================
    FOOTER
    ========================================= */
 
@@ -2537,7 +2639,65 @@ select.form-control {
 .footer p {
     font-size: 13px;
 }
+/* =========================================
+   ADMIN CUSTOMER SEARCH
+   ========================================= */
 
+   .admin-search-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.admin-search-input {
+    flex: 1;
+    min-width: 0;
+    height: 42px;
+    padding: 0 14px;
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+.admin-search-input:focus {
+    border-color: #9ca3af;
+}
+
+.admin-search-button {
+    height: 42px;
+    padding: 0 20px;
+    background: #111827;
+    color: #ffffff;
+    border: 1px solid #111827;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.admin-search-button:hover {
+    background: #374151;
+    border-color: #374151;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .admin-search-form {
+        flex-direction: column;
+    }
+
+    .admin-search-input,
+    .admin-search-button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
 
 /* =========================================
    RESPONSIVE - TABLET
