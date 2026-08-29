@@ -9,6 +9,8 @@
 
     <div class="container">
 
+        <!-- Page Header -->
+
         <div class="page-header">
 
             <span class="section-label">
@@ -36,87 +38,93 @@
                     ORDER INFORMATION
                 </span>
 
+
+                <!-- Order Date -->
+
                 <div class="admin-detail-row">
 
                     <span>
                         Order Date
                     </span>
 
-                    <strong>
-                        @(Model.Order.OrderDate
-                            .ToLocalTime()
-                            .ToString("dd MMM yyyy, hh:mm tt"))
-                    </strong>
+<span>
+        @Model.Order.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+</span>
 
                 </div>
 
 
+                <!-- Order Status -->
+
                 <div class="admin-detail-row">
 
-    <span>
-        Status
-    </span>
+                    <span>
+                        Status
+                    </span>
 
-    <div class="admin-status-control">
+                    <div class="admin-status-control">
 
-<span class="admin-order-status
-    @(Model.Order.Status == "Confirmed" ? "status-confirmed" :
-      Model.Order.Status == "OutForDelivery" ? "status-out-for-delivery" :
-      Model.Order.Status == "Delivered" ? "status-delivered" :
-      Model.Order.Status == "Cancelled" ? "status-cancelled" :
-      "status-pending")">
+                        <span class="admin-order-status
+                            @(Model.Order.Status == "Confirmed" ? "status-confirmed" :
+                              Model.Order.Status == "OutForDelivery" ? "status-out-for-delivery" :
+                              Model.Order.Status == "Delivered" ? "status-delivered" :
+                              Model.Order.Status == "Cancelled" ? "status-cancelled" :
+                              "status-pending")">
 
-    @(Model.Order.Status == "OutForDelivery"
-        ? "Out for Delivery"
-        : Model.Order.Status)
+                            @(Model.Order.Status == "OutForDelivery"
+                                ? "Out for Delivery"
+                                : Model.Order.Status)
 
-</span>
+                        </span>
 
-        <form method="post"
-              asp-page-handler="UpdateStatus"
-              asp-route-id="@Model.Order.Id">
 
-            <select name="status"
-                    class="admin-status-select">
+                        <form method="post"
+                              asp-page-handler="UpdateStatus"
+                              asp-route-id="@Model.Order.Id">
 
-                <option value="Pending"
-                        selected="@(Model.Order.Status == "Pending")">
-                    Pending
-                </option>
+                            <select name="status"
+                                    class="admin-status-select">
 
-                <option value="Confirmed"
-                        selected="@(Model.Order.Status == "Confirmed")">
-                    Confirmed
-                </option>
+                                <option value="Pending"
+                                        selected="@(Model.Order.Status == "Pending")">
+                                    Pending
+                                </option>
 
-                <option value="OutForDelivery"
-                        selected="@(Model.Order.Status == "OutForDelivery")">
-                    Out for Delivery
-                </option>
+                                <option value="Confirmed"
+                                        selected="@(Model.Order.Status == "Confirmed")">
+                                    Confirmed
+                                </option>
 
-                <option value="Delivered"
-                        selected="@(Model.Order.Status == "Delivered")">
-                    Delivered
-                </option>
+                                <option value="OutForDelivery"
+                                        selected="@(Model.Order.Status == "OutForDelivery")">
+                                    Out for Delivery
+                                </option>
 
-                <option value="Cancelled"
-                        selected="@(Model.Order.Status == "Cancelled")">
-                    Cancelled
-                </option>
+                                <option value="Delivered"
+                                        selected="@(Model.Order.Status == "Delivered")">
+                                    Delivered
+                                </option>
 
-            </select>
+                                <option value="Cancelled"
+                                        selected="@(Model.Order.Status == "Cancelled")">
+                                    Cancelled
+                                </option>
 
-            <button type="submit"
-                    class="admin-update-status-button">
-                Update Status
-            </button>
+                            </select>
 
-        </form>
 
-    </div>
+                            <button type="submit"
+                                    class="admin-update-status-button">
 
-</div>
+                                Update Status
 
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
 
             </div>
 
@@ -128,6 +136,7 @@
                 <span class="dashboard-label">
                     CUSTOMER & DELIVERY
                 </span>
+
 
                 <div class="admin-detail-row">
 
@@ -206,6 +215,7 @@
                 ORDER ITEMS
             </span>
 
+
             <div class="admin-order-items">
 
                 @foreach (var item in Model.Order.OrderItems)
@@ -226,6 +236,7 @@
 
                         </div>
 
+
                         <strong>
                             ₹@item.Total.ToString("0.00")
                         </strong>
@@ -241,6 +252,7 @@
             <div class="admin-order-summary">
 
                 <div>
+
                     <span>
                         Subtotal
                     </span>
@@ -248,10 +260,12 @@
                     <strong>
                         ₹@Model.Order.Subtotal.ToString("0.00")
                     </strong>
+
                 </div>
 
 
                 <div>
+
                     <span>
                         Delivery
                     </span>
@@ -259,6 +273,7 @@
                     <strong>
                         ₹@Model.Order.DeliveryCharge.ToString("0.00")
                     </strong>
+
                 </div>
 
 
@@ -279,17 +294,20 @@
         </div>
 
 
-        <!-- Back -->
+        <!-- Back to Orders -->
 
         <div class="admin-detail-actions">
 
-        <a href="/Admin/Orders"
-           class="secondary-button">
-              Back to Orders
-        </a>
+            <a asp-page="/Admin/Orders"
+               class="secondary-button">
 
-</div>
+                Back to Orders
+
+            </a>
+
+        </div>
 
     </div>
 
 </section>
+

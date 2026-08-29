@@ -150,10 +150,9 @@
                                     Order #@order.Id
                                 </h3>
 
-                                <p>
-                                    @order.OrderDate
-                                        .ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
-                                </p>
+                                <span>
+                @order.OrderDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+                                </span>
 
                             </div>
 
