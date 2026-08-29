@@ -1,19 +1,24 @@
 using System.Text.Json;
+using GroceryShopping.Data;
 using GroceryShopping.Models;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.EntityFrameworkCore;
 namespace GroceryShopping.Services;
 
 public class CartService
 {
     private const string CartSessionKey = "FreshMartCart";
 
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IHttpContextAccessor _httpContextAccessor; 
+    private readonly ApplicationDbContext _context;
 
-    public CartService(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
+public CartService(
+    IHttpContextAccessor httpContextAccessor,
+    ApplicationDbContext context)
+{
+    _httpContextAccessor = httpContextAccessor;
+    _context = context;
+}
 
     private ISession Session =>
         _httpContextAccessor.HttpContext!.Session;
@@ -73,22 +78,43 @@ public class CartService
 
 
     // Increase quantity
-    public void IncreaseQuantity(int productId)
+   public async Task<bool> IncreaseQuantityAsync(int productId)
+{
+    var cart = GetCart();
+
+    var item = cart.FirstOrDefault(
+        x => x.ProductId == productId
+    );
+
+    if (item == null)
     {
-        var cart = GetCart();
-
-        var item = cart.FirstOrDefault(
-            x => x.ProductId == productId
-        );
-
-        if (item != null)
-        {
-            item.Quantity++;
-        }
-
-        SaveCart(cart);
+        return false;
     }
 
+    var product = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == productId);
+
+    if (product == null)
+    {
+        return false;
+    }
+
+    if (!product.IsAvailable)
+    {
+        return false;
+    }
+
+    if (item.Quantity >= product.StockQuantity)
+    {
+        return false;
+    }
+
+    item.Quantity++;
+
+    SaveCart(cart);
+
+    return true;
+}
 
     // Decrease quantity
     public void DecreaseQuantity(int productId)

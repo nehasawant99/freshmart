@@ -31,12 +31,12 @@ public class CartModel : PageModel
         LoadCart();
     }
 
-    public IActionResult OnPostIncrease(int productId)
-    {
-        _cartService.IncreaseQuantity(productId);
+    public async Task<IActionResult> OnPostIncreaseAsync(int productId)
+{
+    await _cartService.IncreaseQuantityAsync(productId);
 
-        return RedirectToPage();
-    }
+    return RedirectToPage();
+}
 
     public IActionResult OnPostDecrease(int productId)
     {
