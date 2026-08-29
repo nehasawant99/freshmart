@@ -3,7 +3,6 @@ using GroceryShopping.Data;
 using GroceryShopping.Models;
 using GroceryShopping.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -75,43 +74,6 @@ public class CheckoutModel : PageModel
             return Challenge();
         }
 
-        // Validate current stock before creating the order
-
-foreach (var item in cartItems)
-{
-    var product = await _context.Products
-        .FirstOrDefaultAsync(p => p.Id == item.ProductId);
-
-    if (product == null)
-    {
-        ModelState.AddModelError(
-            string.Empty,
-            $"{item.ProductName} is no longer available.");
-
-        LoadSummary();
-        return Page();
-    }
-
-    if (!product.IsAvailable)
-    {
-        ModelState.AddModelError(
-            string.Empty,
-            $"{product.Name} is currently unavailable.");
-
-        LoadSummary();
-        return Page();
-    }
-
-    if (item.Quantity > product.StockQuantity)
-    {
-        ModelState.AddModelError(
-            string.Empty,
-            $"Only {product.StockQuantity} unit(s) of {product.Name} are currently available.");
-
-        LoadSummary();
-        return Page();
-    }
-}
 
         // Calculate totals
 
@@ -171,11 +133,80 @@ foreach (var item in cartItems)
         }
 
 
-        // Save Order + OrderItems
+        // Save Order + OrderItems + Update Stock
 
-        _context.Orders.Add(order);
+        await using var transaction =
+            await _context.Database.BeginTransactionAsync();
 
-        await _context.SaveChangesAsync();
+        try
+        {
+            _context.Orders.Add(order);
+
+            foreach (var item in cartItems)
+            {
+                var product = await _context.Products
+                    .FirstOrDefaultAsync(p => p.Id == item.ProductId);
+
+                if (product == null)
+                {
+                    await transaction.RollbackAsync();
+
+                    ModelState.AddModelError(
+                        string.Empty,
+                        $"{item.ProductName} is no longer available.");
+
+                    LoadSummary();
+                    return Page();
+                }
+
+                if (!product.IsAvailable)
+                {
+                    await transaction.RollbackAsync();
+
+                    ModelState.AddModelError(
+                        string.Empty,
+                        $"{product.Name} is currently unavailable.");
+
+                    LoadSummary();
+                    return Page();
+                }
+
+                if (item.Quantity > product.StockQuantity)
+                {
+                    await transaction.RollbackAsync();
+
+                    ModelState.AddModelError(
+                        string.Empty,
+                        $"Only {product.StockQuantity} unit(s) of {product.Name} are currently available.");
+
+                    LoadSummary();
+                    return Page();
+                }
+
+                // Deduct stock
+
+                product.StockQuantity -= item.Quantity;
+            }
+
+            // Save order and updated stock
+
+            await _context.SaveChangesAsync();
+
+            // Commit transaction
+
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+
+            ModelState.AddModelError(
+                string.Empty,
+                "Something went wrong while placing your order. Please try again.");
+
+            LoadSummary();
+            return Page();
+        }
 
 
         // Clear cart after successful order
