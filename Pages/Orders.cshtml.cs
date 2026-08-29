@@ -29,6 +29,7 @@ public class OrdersModel : PageModel
         }
 
         Orders = await _context.Orders
+            .Include(o => o.OrderItems)
             .Where(o => o.UserId == userId)
             .OrderByDescending(o => o.OrderDate)
             .ToListAsync();
