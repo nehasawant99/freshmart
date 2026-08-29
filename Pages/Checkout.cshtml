@@ -9,6 +9,8 @@
 
     <div class="container">
 
+        <!-- PAGE HEADER -->
+
         <div class="page-header">
 
             <span class="section-label">
@@ -36,43 +38,57 @@
                     Delivery Information
                 </h2>
 
+
                 <form method="post">
+
+                    <!-- Validation / Stock Errors -->
+
+                    <div asp-validation-summary="All"
+                         class="validation-summary">
+                    </div>
+
+
+                    <!-- Full Name -->
 
                     <div class="form-group">
 
-                        <label>
+                        <label asp-for="FullName">
                             Full Name
                         </label>
 
-                        <input type="text"
-                               name="FullName"
+                        <input asp-for="FullName"
+                               type="text"
                                placeholder="Enter your full name"
                                required />
 
                     </div>
 
 
+                    <!-- Phone Number -->
+
                     <div class="form-group">
 
-                        <label>
+                        <label asp-for="PhoneNumber">
                             Phone Number
                         </label>
 
-                        <input type="tel"
-                               name="PhoneNumber"
+                        <input asp-for="PhoneNumber"
+                               type="tel"
                                placeholder="Enter your phone number"
                                required />
 
                     </div>
 
 
+                    <!-- Address -->
+
                     <div class="form-group">
 
-                        <label>
+                        <label asp-for="Address">
                             Address
                         </label>
 
-                        <textarea name="Address"
+                        <textarea asp-for="Address"
                                   placeholder="Enter your delivery address"
                                   rows="4"
                                   required></textarea>
@@ -80,16 +96,18 @@
                     </div>
 
 
+                    <!-- City + Pincode -->
+
                     <div class="checkout-row">
 
                         <div class="form-group">
 
-                            <label>
+                            <label asp-for="City">
                                 City
                             </label>
 
-                            <input type="text"
-                                   name="City"
+                            <input asp-for="City"
+                                   type="text"
                                    placeholder="Enter city"
                                    required />
 
@@ -98,12 +116,12 @@
 
                         <div class="form-group">
 
-                            <label>
+                            <label asp-for="Pincode">
                                 Pincode
                             </label>
 
-                            <input type="text"
-                                   name="Pincode"
+                            <input asp-for="Pincode"
+                                   type="text"
                                    placeholder="Enter pincode"
                                    required />
 
@@ -111,6 +129,8 @@
 
                     </div>
 
+
+                    <!-- Place Order -->
 
                     <button type="submit"
                             class="checkout-button">
@@ -133,6 +153,8 @@
                 </h2>
 
 
+                <!-- Subtotal -->
+
                 <div class="summary-row">
 
                     <span>
@@ -140,11 +162,13 @@
                     </span>
 
                     <strong>
-                        ₹@Model.Subtotal
+                        ₹@Model.Subtotal.ToString("0.00")
                     </strong>
 
                 </div>
 
+
+                <!-- Delivery -->
 
                 <div class="summary-row">
 
@@ -153,7 +177,7 @@
                     </span>
 
                     <strong>
-                        ₹@Model.DeliveryCharge
+                        ₹@Model.DeliveryCharge.ToString("0.00")
                     </strong>
 
                 </div>
@@ -162,6 +186,8 @@
                 <hr />
 
 
+                <!-- Total -->
+
                 <div class="summary-total">
 
                     <span>
@@ -169,7 +195,7 @@
                     </span>
 
                     <strong>
-                        ₹@Model.Total
+                        ₹@Model.Total.ToString("0.00")
                     </strong>
 
                 </div>
@@ -181,3 +207,11 @@
     </div>
 
 </section>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
+

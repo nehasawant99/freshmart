@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace GroceryShopping.Pages;
 
@@ -74,6 +75,43 @@ public class CheckoutModel : PageModel
             return Challenge();
         }
 
+        // Validate current stock before creating the order
+
+foreach (var item in cartItems)
+{
+    var product = await _context.Products
+        .FirstOrDefaultAsync(p => p.Id == item.ProductId);
+
+    if (product == null)
+    {
+        ModelState.AddModelError(
+            string.Empty,
+            $"{item.ProductName} is no longer available.");
+
+        LoadSummary();
+        return Page();
+    }
+
+    if (!product.IsAvailable)
+    {
+        ModelState.AddModelError(
+            string.Empty,
+            $"{product.Name} is currently unavailable.");
+
+        LoadSummary();
+        return Page();
+    }
+
+    if (item.Quantity > product.StockQuantity)
+    {
+        ModelState.AddModelError(
+            string.Empty,
+            $"Only {product.StockQuantity} unit(s) of {product.Name} are currently available.");
+
+        LoadSummary();
+        return Page();
+    }
+}
 
         // Calculate totals
 
