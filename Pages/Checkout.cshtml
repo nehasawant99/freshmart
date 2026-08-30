@@ -9,8 +9,6 @@
 
     <div class="container">
 
-        <!-- PAGE HEADER -->
-
         <div class="page-header">
 
             <span class="section-label">
@@ -38,17 +36,16 @@
                     Delivery Information
                 </h2>
 
+                <!-- General validation errors -->
+
+                <div asp-validation-summary="ModelOnly"
+                     class="validation-summary">
+                </div>
+
 
                 <form method="post">
 
-                    <!-- Validation / Stock Errors -->
-
-                    <div asp-validation-summary="All"
-                         class="validation-summary">
-                    </div>
-
-
-                    <!-- Full Name -->
+                    <!-- FULL NAME -->
 
                     <div class="form-group">
 
@@ -59,12 +56,16 @@
                         <input asp-for="FullName"
                                type="text"
                                placeholder="Enter your full name"
-                               required />
+                               autocomplete="name" />
+
+                        <span asp-validation-for="FullName"
+                              class="field-validation">
+                        </span>
 
                     </div>
 
 
-                    <!-- Phone Number -->
+                    <!-- PHONE -->
 
                     <div class="form-group">
 
@@ -74,13 +75,19 @@
 
                         <input asp-for="PhoneNumber"
                                type="tel"
-                               placeholder="Enter your phone number"
-                               required />
+                               placeholder="Enter 10-digit mobile number"
+                               maxlength="10"
+                               inputmode="numeric"
+                               autocomplete="tel" />
+
+                        <span asp-validation-for="PhoneNumber"
+                              class="field-validation">
+                        </span>
 
                     </div>
 
 
-                    <!-- Address -->
+                    <!-- ADDRESS -->
 
                     <div class="form-group">
 
@@ -91,12 +98,16 @@
                         <textarea asp-for="Address"
                                   placeholder="Enter your delivery address"
                                   rows="4"
-                                  required></textarea>
+                                  autocomplete="street-address"></textarea>
+
+                        <span asp-validation-for="Address"
+                              class="field-validation">
+                        </span>
 
                     </div>
 
 
-                    <!-- City + Pincode -->
+                    <!-- CITY + PINCODE -->
 
                     <div class="checkout-row">
 
@@ -109,7 +120,11 @@
                             <input asp-for="City"
                                    type="text"
                                    placeholder="Enter city"
-                                   required />
+                                   autocomplete="address-level2" />
+
+                            <span asp-validation-for="City"
+                                  class="field-validation">
+                            </span>
 
                         </div>
 
@@ -122,15 +137,21 @@
 
                             <input asp-for="Pincode"
                                    type="text"
-                                   placeholder="Enter pincode"
-                                   required />
+                                   placeholder="6-digit pincode"
+                                   maxlength="6"
+                                   inputmode="numeric"
+                                   autocomplete="postal-code" />
+
+                            <span asp-validation-for="Pincode"
+                                  class="field-validation">
+                            </span>
 
                         </div>
 
                     </div>
 
 
-                    <!-- Place Order -->
+                    <!-- PLACE ORDER -->
 
                     <button type="submit"
                             class="checkout-button">
@@ -153,8 +174,6 @@
                 </h2>
 
 
-                <!-- Subtotal -->
-
                 <div class="summary-row">
 
                     <span>
@@ -167,8 +186,6 @@
 
                 </div>
 
-
-                <!-- Delivery -->
 
                 <div class="summary-row">
 
@@ -185,8 +202,6 @@
 
                 <hr />
 
-
-                <!-- Total -->
 
                 <div class="summary-total">
 
@@ -209,9 +224,8 @@
 </section>
 
 
-@section Scripts {
-
+@section Scripts
+{
     <partial name="_ValidationScriptsPartial" />
-
 }
 

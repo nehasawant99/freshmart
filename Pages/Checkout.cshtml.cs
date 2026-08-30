@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
 using GroceryShopping.Data;
 using GroceryShopping.Models;
 using GroceryShopping.Services;
@@ -29,19 +30,57 @@ public class CheckoutModel : PageModel
 
     public decimal Total { get; set; }
 
+
+    // =========================
+    // DELIVERY VALIDATION
+    // =========================
+
     [BindProperty]
+    [Required(ErrorMessage = "Please enter your full name.")]
+    [StringLength(
+        100,
+        MinimumLength = 2,
+        ErrorMessage = "Name must be between 2 and 100 characters.")]
+    [RegularExpression(
+        @"^[A-Za-z]+(?:[ .'-][A-Za-z]+)*$",
+        ErrorMessage = "Please enter a valid name.")]
     public string FullName { get; set; } = string.Empty;
 
+
     [BindProperty]
+    [Required(ErrorMessage = "Please enter your phone number.")]
+    [RegularExpression(
+        @"^[6-9]\d{9}$",
+        ErrorMessage = "Please enter a valid 10-digit Indian mobile number.")]
     public string PhoneNumber { get; set; } = string.Empty;
 
+
     [BindProperty]
+    [Required(ErrorMessage = "Please enter your address.")]
+    [StringLength(
+        250,
+        MinimumLength = 5,
+        ErrorMessage = "Address must be between 5 and 250 characters.")]
     public string Address { get; set; } = string.Empty;
 
-    [BindProperty]
-    public string City { get; set; } = string.Empty;
 
     [BindProperty]
+    [Required(ErrorMessage = "Please enter your city.")]
+    [StringLength(
+        50,
+        MinimumLength = 2,
+        ErrorMessage = "City must be between 2 and 50 characters.")]
+    [RegularExpression(
+        @"^[A-Za-z]+(?:[ .'-][A-Za-z]+)*$",
+        ErrorMessage = "Please enter a valid city.")]
+    public string City { get; set; } = string.Empty;
+
+
+    [BindProperty]
+    [Required(ErrorMessage = "Please enter your pincode.")]
+    [RegularExpression(
+        @"^\d{6}$",
+        ErrorMessage = "Pincode must be exactly 6 digits.")]
     public string Pincode { get; set; } = string.Empty;
 
 
@@ -60,11 +99,15 @@ public class CheckoutModel : PageModel
             return RedirectToPage("/Cart");
         }
 
+
+        // Validate customer information
+
         if (!ModelState.IsValid)
         {
             LoadSummary();
             return Page();
         }
+
 
         var userId = User.FindFirstValue(
             ClaimTypes.NameIdentifier);
@@ -75,7 +118,9 @@ public class CheckoutModel : PageModel
         }
 
 
-        // Calculate totals
+        // =========================
+        // CALCULATE TOTALS
+        // =========================
 
         Subtotal = _cartService.GetSubtotal();
 
@@ -84,7 +129,9 @@ public class CheckoutModel : PageModel
         Total = Subtotal + DeliveryCharge;
 
 
-        // Create Order
+        // =========================
+        // CREATE ORDER
+        // =========================
 
         var order = new Order
         {
@@ -112,7 +159,9 @@ public class CheckoutModel : PageModel
         };
 
 
-        // Create Order Items
+        // =========================
+        // CREATE ORDER ITEMS
+        // =========================
 
         foreach (var item in cartItems)
         {
@@ -133,7 +182,9 @@ public class CheckoutModel : PageModel
         }
 
 
-        // Save Order + OrderItems + Update Stock
+        // =========================
+        // SAVE ORDER + UPDATE STOCK
+        // =========================
 
         await using var transaction =
             await _context.Database.BeginTransactionAsync();
@@ -142,10 +193,15 @@ public class CheckoutModel : PageModel
         {
             _context.Orders.Add(order);
 
+
             foreach (var item in cartItems)
             {
                 var product = await _context.Products
-                    .FirstOrDefaultAsync(p => p.Id == item.ProductId);
+                    .FirstOrDefaultAsync(
+                        p => p.Id == item.ProductId);
+
+
+                // Product doesn't exist
 
                 if (product == null)
                 {
@@ -156,8 +212,12 @@ public class CheckoutModel : PageModel
                         $"{item.ProductName} is no longer available.");
 
                     LoadSummary();
+
                     return Page();
                 }
+
+
+                // Product disabled by admin
 
                 if (!product.IsAvailable)
                 {
@@ -168,8 +228,12 @@ public class CheckoutModel : PageModel
                         $"{product.Name} is currently unavailable.");
 
                     LoadSummary();
+
                     return Page();
                 }
+
+
+                // Not enough stock
 
                 if (item.Quantity > product.StockQuantity)
                 {
@@ -180,57 +244,84 @@ public class CheckoutModel : PageModel
                         $"Only {product.StockQuantity} unit(s) of {product.Name} are currently available.");
 
                     LoadSummary();
+
                     return Page();
                 }
+
 
                 // Deduct stock
 
                 product.StockQuantity -= item.Quantity;
             }
 
-            // Save order and updated stock
+
+            // Save order and stock changes
 
             await _context.SaveChangesAsync();
+
 
             // Commit transaction
 
             await transaction.CommitAsync();
         }
+
+
+        // =========================
+        // CONCURRENCY CONFLICT
+        // =========================
+
         catch (DbUpdateConcurrencyException)
-{
-    await transaction.RollbackAsync();
+        {
+            await transaction.RollbackAsync();
 
-    ModelState.AddModelError(
-        string.Empty,
-        "This product was just purchased by another customer. Please review your cart and try again.");
+            ModelState.AddModelError(
+                string.Empty,
+                "This product was just purchased by another customer. Please review your cart and try again.");
 
-    LoadSummary();
-    return Page();
-}
-catch
-{
-    await transaction.RollbackAsync();
+            LoadSummary();
 
-    ModelState.AddModelError(
-        string.Empty,
-        "Something went wrong while placing your order. Please try again.");
+            return Page();
+        }
 
-    LoadSummary();
-    return Page();
-}
 
-        // Clear cart after successful order
+        // =========================
+        // GENERAL ERROR
+        // =========================
+
+        catch
+        {
+            await transaction.RollbackAsync();
+
+            ModelState.AddModelError(
+                string.Empty,
+                "Something went wrong while placing your order. Please try again.");
+
+            LoadSummary();
+
+            return Page();
+        }
+
+
+        // =========================
+        // CLEAR CART
+        // =========================
 
         _cartService.ClearCart();
 
 
-        // Go to order confirmation
+        // =========================
+        // ORDER CONFIRMATION
+        // =========================
 
         return RedirectToPage(
             "/OrderConfirmation",
             new { id = order.Id });
     }
 
+
+    // =========================
+    // LOAD ORDER SUMMARY
+    // =========================
 
     private void LoadSummary()
     {
@@ -248,3 +339,4 @@ catch
         Total = Subtotal + DeliveryCharge;
     }
 }
+
