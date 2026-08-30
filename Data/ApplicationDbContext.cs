@@ -22,9 +22,22 @@ public class ApplicationDbContext
 
     public DbSet<OrderItem> OrderItems { get; set; }
 
+    public DbSet<Payment> Payments { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+          // =========================
+         //  ORDER - PAYMENT
+        //   =========================
+
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Payment)
+            .WithOne(p => p.Order)
+            .HasForeignKey<Payment>(p => p.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
         // =========================
         // PRODUCT PRICE PRECISION

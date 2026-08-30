@@ -40,4 +40,7 @@ public class Order
 
     // Order items
     public List<OrderItem> OrderItems { get; set; } = new();
+  
+    // Payment
+    public Payment? Payment { get; set; }
 }
