@@ -196,18 +196,28 @@ public class CheckoutModel : PageModel
 
             await transaction.CommitAsync();
         }
-        catch
-        {
-            await transaction.RollbackAsync();
+        catch (DbUpdateConcurrencyException)
+{
+    await transaction.RollbackAsync();
 
-            ModelState.AddModelError(
-                string.Empty,
-                "Something went wrong while placing your order. Please try again.");
+    ModelState.AddModelError(
+        string.Empty,
+        "This product was just purchased by another customer. Please review your cart and try again.");
 
-            LoadSummary();
-            return Page();
-        }
+    LoadSummary();
+    return Page();
+}
+catch
+{
+    await transaction.RollbackAsync();
 
+    ModelState.AddModelError(
+        string.Empty,
+        "Something went wrong while placing your order. Please try again.");
+
+    LoadSummary();
+    return Page();
+}
 
         // Clear cart after successful order
 

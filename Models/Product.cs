@@ -16,9 +16,13 @@ public class Product
 
     public bool IsAvailable { get; set; } = true;
 
+    // Used by EF Core to detect simultaneous updates
+    public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+
     // Foreign key
     public int CategoryId { get; set; }
 
     // Navigation property
     public Category? Category { get; set; }
 }
+

@@ -34,6 +34,13 @@ public class ApplicationDbContext
             .Property(p => p.Price)
             .HasPrecision(18, 2);
 
+        // =========================
+        //    PRODUCT CONCURRENCY
+       //  =========================
+
+       modelBuilder.Entity<Product>()
+           .Property(p => p.RowVersion)
+           .IsRowVersion();
 
         // =========================
         // CATEGORIES
