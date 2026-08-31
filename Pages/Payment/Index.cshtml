@@ -1,0 +1,137 @@
+@page "{id:int}"
+@model GroceryShopping.Pages.Payment.IndexModel
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="page-header">
+
+            <span class="section-label">
+                FRESHMART
+            </span>
+
+            <h1>
+                Payment
+            </h1>
+
+            <p>
+                Complete payment for your order.
+            </p>
+
+        </div>
+
+
+        @if (Model.Order != null && Model.Payment != null)
+        {
+            <div class="checkout-layout">
+
+                <div class="checkout-form">
+
+                    <h2>
+                        Payment Details
+                    </h2>
+
+                    <div class="summary-row">
+
+                        <span>
+                            Order
+                        </span>
+
+                        <strong>
+                            #@Model.Order.Id
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Payment Method
+                        </span>
+
+                        <strong>
+                            @(Model.Payment.PaymentMethod == "CashOnDelivery"
+                                ? "Cash on Delivery"
+                                : Model.Payment.PaymentMethod)
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Amount
+                        </span>
+
+                        <strong>
+                            ₹@Model.Payment.Amount.ToString("0.00")
+                        </strong>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong>
+                            @Model.Payment.Status
+                        </strong>
+
+                    </div>
+
+
+                    @if (Model.Payment.Status == "Pending")
+                    {
+                        <form method="post"
+                              asp-page-handler="Pay"
+                              asp-route-id="@Model.Order.Id">
+
+                            <button type="submit"
+                                    class="checkout-button">
+
+                                Pay Now
+
+                            </button>
+
+                        </form>
+                    }
+
+                </div>
+
+
+                <div class="cart-summary">
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+                    <div class="summary-row">
+
+                        <span>
+                            Order Total
+                        </span>
+
+                        <strong>
+                            ₹@Model.Order.Total.ToString("0.00")
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+</section>

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.ComponentModel.DataAnnotations;
 using GroceryShopping.Data;
 using GroceryShopping.Models;
+using PaymentModel = GroceryShopping.Models.Payment;
 using GroceryShopping.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -158,12 +159,12 @@ public class CheckoutModel : PageModel
 
             Pincode = Pincode
         };
-       var payment = new Payment
+       var payment = new PaymentModel
 {
-          Order = order,
-          Amount = Total,
-          PaymentMethod = PaymentMethod,
-          Status = "Pending"
+           Order = order,
+           Amount = Total,
+           PaymentMethod = PaymentMethod,
+           Status = "Pending"
 };
 
 order.Payment = payment;
@@ -323,7 +324,7 @@ order.Payment = payment;
         // =========================
 
         return RedirectToPage(
-            "/OrderConfirmation",
+            "/Payment/Index",
             new { id = order.Id });
     }
 
