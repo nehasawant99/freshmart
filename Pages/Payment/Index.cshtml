@@ -30,11 +30,14 @@
         {
             <div class="checkout-layout">
 
+                <!-- PAYMENT DETAILS -->
+
                 <div class="checkout-form">
 
                     <h2>
                         Payment Details
                     </h2>
+
 
                     <div class="summary-row">
 
@@ -90,6 +93,8 @@
                     </div>
 
 
+                    <!-- PENDING -->
+
                     @if (Model.Payment.Status == "Pending")
                     {
                         <form method="post"
@@ -104,16 +109,84 @@
                             </button>
 
                         </form>
+
+
+                        <!-- Development testing only -->
+
+                        <form method="post"
+                              asp-page-handler="Fail"
+                              asp-route-id="@Model.Order.Id"
+                              style="margin-top: 10px;">
+
+                            <button type="submit"
+                                    class="secondary-button">
+
+                                Simulate Payment Failure
+
+                            </button>
+
+                        </form>
+                    }
+
+
+                    <!-- FAILED -->
+
+                    @if (Model.Payment.Status == "Failed")
+                    {
+                        <div class="validation-summary">
+
+                            Payment failed. Your order is still pending.
+                            You can retry the payment.
+
+                        </div>
+
+
+                        <form method="post"
+                              asp-page-handler="Pay"
+                              asp-route-id="@Model.Order.Id">
+
+                            <button type="submit"
+                                    class="checkout-button">
+
+                                Retry Payment
+
+                            </button>
+
+                        </form>
+                    }
+
+
+                    <!-- PAID -->
+
+                    @if (Model.Payment.Status == "Paid")
+                    {
+                        <div class="validation-summary">
+
+                            Payment completed successfully.
+
+                        </div>
+
+
+                        <a asp-page="/OrderConfirmation"
+                           asp-route-id="@Model.Order.Id"
+                           class="primary-button">
+
+                            View Order Confirmation
+
+                        </a>
                     }
 
                 </div>
 
+
+                <!-- ORDER SUMMARY -->
 
                 <div class="cart-summary">
 
                     <h2>
                         Order Summary
                     </h2>
+
 
                     <div class="summary-row">
 
@@ -135,3 +208,4 @@
     </div>
 
 </section>
+

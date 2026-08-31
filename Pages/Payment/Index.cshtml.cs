@@ -22,6 +22,11 @@ public class IndexModel : PageModel
 
     public GroceryShopping.Models.Payment? Payment { get; set; }
 
+
+    // =========================
+    // LOAD PAYMENT PAGE
+    // =========================
+
     public async Task<IActionResult> OnGetAsync(int id)
     {
         var userId = User.FindFirstValue(
@@ -52,54 +57,135 @@ public class IndexModel : PageModel
 
         return Page();
     }
+
+
+    // =========================
+    // SUCCESSFUL PAYMENT
+    // =========================
+
     public async Task<IActionResult> OnPostPayAsync(int id)
-{
-    var userId = User.FindFirstValue(
-        ClaimTypes.NameIdentifier);
-
-    if (string.IsNullOrEmpty(userId))
     {
-        return Challenge();
-    }
+        var userId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
 
-    var order = await _context.Orders
-        .Include(o => o.Payment)
-        .FirstOrDefaultAsync(o =>
-            o.Id == id &&
-            o.UserId == userId);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
 
-    if (order == null)
-    {
-        return NotFound();
-    }
+        var order = await _context.Orders
+            .Include(o => o.Payment)
+            .FirstOrDefaultAsync(o =>
+                o.Id == id &&
+                o.UserId == userId);
 
-    if (order.Payment == null)
-    {
-        return NotFound();
-    }
+        if (order == null)
+        {
+            return NotFound();
+        }
 
-    if (order.Payment.Status == "Paid")
-    {
+        if (order.Payment == null)
+        {
+            return NotFound();
+        }
+
+
+        // Prevent duplicate payment
+
+        if (order.Payment.Status == "Paid")
+        {
+            return RedirectToPage(
+                "/OrderConfirmation",
+                new { id = order.Id });
+        }
+
+
+        // Payment must be pending or failed
+
+        if (order.Payment.Status != "Pending" &&
+            order.Payment.Status != "Failed")
+        {
+            return BadRequest();
+        }
+
+
+        // Simulate successful payment
+
+        order.Payment.Status = "Paid";
+
+        order.Payment.TransactionId =
+            $"TXN-{Guid.NewGuid().ToString("N")[..12].ToUpper()}";
+
+        order.Payment.PaymentDate = DateTime.UtcNow;
+
+        order.Status = "Confirmed";
+
+
+        await _context.SaveChangesAsync();
+
+
         return RedirectToPage(
             "/OrderConfirmation",
             new { id = order.Id });
     }
 
-    // Simulate successful payment
 
-    order.Payment.Status = "Paid";
+    // =========================
+    // SIMULATE PAYMENT FAILURE
+    // =========================
 
-    order.Payment.TransactionId =
-        $"TXN-{Guid.NewGuid().ToString("N")[..12].ToUpper()}";
+    public async Task<IActionResult> OnPostFailAsync(int id)
+    {
+        var userId = User.FindFirstValue(
+            ClaimTypes.NameIdentifier);
 
-    order.Payment.PaymentDate = DateTime.UtcNow;
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
 
-    order.Status = "Confirmed";
+        var order = await _context.Orders
+            .Include(o => o.Payment)
+            .FirstOrDefaultAsync(o =>
+                o.Id == id &&
+                o.UserId == userId);
 
-    await _context.SaveChangesAsync();
+        if (order == null)
+        {
+            return NotFound();
+        }
 
-    return RedirectToPage(
-        "/OrderConfirmation",
-        new { id = order.Id });
+        if (order.Payment == null)
+        {
+            return NotFound();
+        }
+
+
+        // Do not allow a paid payment to become failed
+
+        if (order.Payment.Status == "Paid")
+        {
+            return RedirectToPage(
+                "/OrderConfirmation",
+                new { id = order.Id });
+        }
+
+
+        // Simulate failed payment
+
+        order.Payment.Status = "Failed";
+
+        order.Payment.TransactionId = null;
+
+        order.Status = "Pending";
+
+
+        await _context.SaveChangesAsync();
+
+
+        return RedirectToPage(
+            "/Payment/Index",
+            new { id = order.Id });
+    }
 }
-}
+
