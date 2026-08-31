@@ -164,7 +164,8 @@ public class CheckoutModel : PageModel
            Order = order,
            Amount = Total,
            PaymentMethod = PaymentMethod,
-           Status = "Pending"
+           Status = "Pending",
+           ExpiresAt = DateTime.UtcNow.AddMinutes(15)
 };
 
 order.Payment = payment;

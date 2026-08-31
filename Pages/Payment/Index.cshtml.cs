@@ -55,6 +55,22 @@ public class IndexModel : PageModel
             return NotFound();
         }
 
+
+        // =========================
+        // CHECK PAYMENT EXPIRATION
+        // =========================
+
+        if (Payment.Status == "Pending" &&
+            DateTime.UtcNow >= Payment.ExpiresAt)
+        {
+            Payment.Status = "Expired";
+
+            Order.Status = "Cancelled";
+
+            await _context.SaveChangesAsync();
+        }
+
+
         return Page();
     }
 
@@ -84,15 +100,38 @@ public class IndexModel : PageModel
             return NotFound();
         }
 
-        if (order.Payment == null)
+
+        var payment = order.Payment;
+
+        if (payment == null)
         {
             return NotFound();
         }
 
 
-        // Prevent duplicate payment
+        // =========================
+        // CHECK EXPIRATION
+        // =========================
 
-        if (order.Payment.Status == "Paid")
+        if (payment.Status == "Pending" &&
+            DateTime.UtcNow >= payment.ExpiresAt)
+        {
+            payment.Status = "Expired";
+
+            order.Status = "Cancelled";
+
+            await _context.SaveChangesAsync();
+
+            return BadRequest(
+                "This payment has expired.");
+        }
+
+
+        // =========================
+        // PREVENT DUPLICATE PAYMENT
+        // =========================
+
+        if (payment.Status == "Paid")
         {
             return RedirectToPage(
                 "/OrderConfirmation",
@@ -100,23 +139,27 @@ public class IndexModel : PageModel
         }
 
 
-        // Payment must be pending or failed
+        // =========================
+        // VALID PAYMENT STATES
+        // =========================
 
-        if (order.Payment.Status != "Pending" &&
-            order.Payment.Status != "Failed")
+        if (payment.Status != "Pending" &&
+            payment.Status != "Failed")
         {
             return BadRequest();
         }
 
 
-        // Simulate successful payment
+        // =========================
+        // SIMULATE SUCCESSFUL PAYMENT
+        // =========================
 
-        order.Payment.Status = "Paid";
+        payment.Status = "Paid";
 
-        order.Payment.TransactionId =
+        payment.TransactionId =
             $"TXN-{Guid.NewGuid().ToString("N")[..12].ToUpper()}";
 
-        order.Payment.PaymentDate = DateTime.UtcNow;
+        payment.PaymentDate = DateTime.UtcNow;
 
         order.Status = "Confirmed";
 
@@ -155,7 +198,10 @@ public class IndexModel : PageModel
             return NotFound();
         }
 
-        if (order.Payment == null)
+
+        var payment = order.Payment;
+
+        if (payment == null)
         {
             return NotFound();
         }
@@ -163,7 +209,7 @@ public class IndexModel : PageModel
 
         // Do not allow a paid payment to become failed
 
-        if (order.Payment.Status == "Paid")
+        if (payment.Status == "Paid")
         {
             return RedirectToPage(
                 "/OrderConfirmation",
@@ -171,11 +217,22 @@ public class IndexModel : PageModel
         }
 
 
-        // Simulate failed payment
+        // Do not allow an expired payment to become failed
 
-        order.Payment.Status = "Failed";
+        if (payment.Status == "Expired")
+        {
+            return BadRequest(
+                "This payment has expired.");
+        }
 
-        order.Payment.TransactionId = null;
+
+        // =========================
+        // SIMULATE FAILURE
+        // =========================
+
+        payment.Status = "Failed";
+
+        payment.TransactionId = null;
 
         order.Status = "Pending";
 
