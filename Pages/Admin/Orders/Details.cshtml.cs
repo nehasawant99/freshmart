@@ -35,23 +35,37 @@ public class DetailsModel : PageModel
 
 
     public async Task<IActionResult> OnPostUpdateStatusAsync(
-        int id,
-        string status)
+    int id,
+    string status)
+{
+    var allowedStatuses = new[]
     {
-        var order = await _context.Orders
-            .FirstOrDefaultAsync(o => o.Id == id);
+        "Pending",
+        "Confirmed",
+        "OutForDelivery",
+        "Delivered",
+        "Cancelled"
+    };
 
-        if (order == null)
-        {
-            return NotFound();
-        }
-
-        order.Status = status;
-
-        await _context.SaveChangesAsync();
-
-        return RedirectToPage(
-            "/Admin/Orders/Details",
-            new { id = order.Id });
+    if (!allowedStatuses.Contains(status))
+    {
+        return BadRequest("Invalid order status.");
     }
+
+    var order = await _context.Orders
+        .FirstOrDefaultAsync(o => o.Id == id);
+
+    if (order == null)
+    {
+        return NotFound();
+    }
+
+    order.Status = status;
+
+    await _context.SaveChangesAsync();
+
+    return RedirectToPage(
+        "/Admin/Orders/Details",
+        new { id = order.Id });
+}
 }
