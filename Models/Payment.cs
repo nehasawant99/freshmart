@@ -25,4 +25,7 @@ public class Payment
     public string? TransactionId { get; set; }
 
     public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
+
+    // Expiration date for the payment session (if applicable)
+    public DateTime ExpiresAt { get; set; }
 }
