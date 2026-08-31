@@ -36,7 +36,8 @@
                     Delivery Information
                 </h2>
 
-                <!-- General validation errors -->
+
+                <!-- GENERAL VALIDATION ERRORS -->
 
                 <div asp-validation-summary="ModelOnly"
                      class="validation-summary">
@@ -151,6 +152,41 @@
                     </div>
 
 
+                    <!-- PAYMENT METHOD -->
+
+                    <div class="form-group">
+
+                        <label asp-for="PaymentMethod">
+                            Payment Method
+                        </label>
+
+                        <select asp-for="PaymentMethod">
+
+                            <option value="">
+                                Select payment method
+                            </option>
+
+                            <option value="CashOnDelivery">
+                                Cash on Delivery
+                            </option>
+
+                            <option value="UPI">
+                                UPI
+                            </option>
+
+                            <option value="Card">
+                                Card
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="PaymentMethod"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+
                     <!-- PLACE ORDER -->
 
                     <button type="submit"
@@ -228,4 +264,3 @@
 {
     <partial name="_ValidationScriptsPartial" />
 }
-

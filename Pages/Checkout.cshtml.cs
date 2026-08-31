@@ -83,12 +83,13 @@ public class CheckoutModel : PageModel
         ErrorMessage = "Pincode must be exactly 6 digits.")]
     public string Pincode { get; set; } = string.Empty;
 
-
+    [BindProperty]
+    [Required(ErrorMessage = "Please select a payment method.")]
+    public string PaymentMethod { get; set; } = string.Empty;
     public void OnGet()
     {
         LoadSummary();
     }
-
 
     public async Task<IActionResult> OnPostAsync()
     {
@@ -157,7 +158,15 @@ public class CheckoutModel : PageModel
 
             Pincode = Pincode
         };
+       var payment = new Payment
+{
+          Order = order,
+          Amount = Total,
+          PaymentMethod = PaymentMethod,
+          Status = "Pending"
+};
 
+order.Payment = payment;
 
         // =========================
         // CREATE ORDER ITEMS
