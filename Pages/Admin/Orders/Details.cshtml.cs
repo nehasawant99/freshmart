@@ -22,8 +22,9 @@ public class DetailsModel : PageModel
     public async Task<IActionResult> OnGetAsync(int id)
     {
         Order = await _context.Orders
-            .Include(o => o.OrderItems)
-            .FirstOrDefaultAsync(o => o.Id == id);
+             .Include(o => o.OrderItems)
+             .Include(o => o.Payment)
+             .FirstOrDefaultAsync(o => o.Id == id);
 
         if (Order == null)
         {

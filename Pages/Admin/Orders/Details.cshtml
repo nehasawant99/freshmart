@@ -206,6 +206,100 @@
 
         </div>
 
+    <!-- Payment Information -->
+
+<div class="admin-detail-card">
+
+    <span class="dashboard-label">
+        PAYMENT INFORMATION
+    </span>
+
+    @if (Model.Order.Payment != null)
+    {
+        <div class="admin-detail-row">
+
+            <span>
+                Payment Method
+            </span>
+
+            <strong>
+                @(Model.Order.Payment.PaymentMethod == "CashOnDelivery"
+                    ? "Cash on Delivery"
+                    : Model.Order.Payment.PaymentMethod)
+            </strong>
+
+        </div>
+
+
+        <div class="admin-detail-row">
+
+            <span>
+                Payment Status
+            </span>
+
+            <strong>
+                @Model.Order.Payment.Status
+            </strong>
+
+        </div>
+
+
+        <div class="admin-detail-row">
+
+            <span>
+                Amount
+            </span>
+
+            <strong>
+                ₹@Model.Order.Payment.Amount.ToString("0.00")
+            </strong>
+
+        </div>
+
+
+        <div class="admin-detail-row">
+
+            <span>
+                Transaction ID
+            </span>
+
+            <strong>
+                @(string.IsNullOrEmpty(Model.Order.Payment.TransactionId)
+                    ? "—"
+                    : Model.Order.Payment.TransactionId)
+            </strong>
+
+        </div>
+
+
+        <div class="admin-detail-row">
+
+            <span>
+                Payment Date
+            </span>
+
+    <strong>
+    @Model.Order.Payment.PaymentDate.ToLocalTime().ToString("dd MMM yyyy, hh:mm tt")
+    </strong>
+
+        </div>
+    }
+    else
+    {
+        <div class="admin-detail-row">
+
+            <span>
+                Payment
+            </span>
+
+            <strong>
+                No payment record
+            </strong>
+
+        </div>
+    }
+
+</div>
 
         <!-- Ordered Products -->
 
