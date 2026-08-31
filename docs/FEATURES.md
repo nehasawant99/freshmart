@@ -388,33 +388,3 @@ The application validates:
 * Order state
 * User ownership
 
----
-
-## 19. Feature Status
-
-| Feature                          | Status      |
-| -------------------------------- | ----------- |
-| Registration                     | Implemented |
-| Login / Logout                   | Implemented |
-| Profile                          | Implemented |
-| Product browsing                 | Implemented |
-| Categories                       | Implemented |
-| Cart                             | Implemented |
-| Checkout                         | Implemented |
-| Order creation                   | Implemented |
-| Inventory validation             | Implemented |
-| Stock concurrency                | Implemented |
-| Payment                          | Implemented |
-| Payment failure                  | Implemented |
-| Payment retry                    | Implemented |
-| Payment expiration               | Implemented |
-| Order cancellation               | Implemented |
-| Order confirmation               | Implemented |
-| Customer order history           | Implemented |
-| Admin dashboard                  | Implemented |
-| Admin authorization              | Implemented |
-| Admin order management           | Implemented |
-| Final security validation        | Pending     |
-| Full concurrency validation      | Pending     |
-| Payment idempotency validation   | Pending     |
-| Full data-consistency validation | Pending     |
