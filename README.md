@@ -9,4 +9,4 @@ FRESHMART .NET Project
 <img width="1470" height="867" alt="Screenshot 2026-08-21 at 9 01 35 PM" src="https://github.com/user-attachments/assets/2e4db7e0-5a5f-4b64-bb19-1685fe9393d3" />
 
 
-📈 Work in progress!
+## 📈 Work in progress!
